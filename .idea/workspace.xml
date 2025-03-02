@@ -9,10 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9c70ca9c-63e0-48ca-8746-95b2878f12bc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/programs/promise_keeper/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tests/promise_keeper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +36,7 @@
   "keyToString": {
     "Mocha.promise_keeper.Is initialized!.executor": "Run",
     "Mocha.promise_keeper.executor": "Run",
+    "Mocha.promise_keeper.should take task.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
@@ -52,7 +52,7 @@
     "ts.external.directory.path": "/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/typescript/lib"
   }
 }]]></component>
-  <component name="RunManager" selected="Mocha.promise_keeper.Is initialized!">
+  <component name="RunManager" selected="Mocha.promise_keeper.should take task">
     <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -94,8 +94,25 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="promise_keeper.should take task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <ui>bdd</ui>
+      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
+      <test-names>
+        <name value="promise_keeper" />
+        <name value="should take task" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Mocha.promise_keeper.should take task" />
         <item itemvalue="Mocha.promise_keeper.Is initialized!" />
         <item itemvalue="npm.test" />
         <item itemvalue="Mocha.promise_keeper" />
@@ -117,7 +134,8 @@
       <workItem from="1740504076580" duration="5043000" />
       <workItem from="1740511494179" duration="17000" />
       <workItem from="1740844449570" duration="4463000" />
-      <workItem from="1740858042685" duration="15705000" />
+      <workItem from="1740858042685" duration="16296000" />
+      <workItem from="1740940883441" duration="2142000" />
     </task>
     <servers />
   </component>

@@ -30,16 +30,20 @@ pub mod promise_keeper {
         Ok(())
     }
 
-    // pub fn increment(ctx: Context<Increment>) -> Result<()> {
-    //     require_keys_eq!(
-    //         ctx.accounts.authority.key(),
-    //         ctx.accounts.counter.authority,
-    //         ErrorCode::Unauthorized
-    //     );
-    //
-    //     ctx.accounts.counter.count += 1;
-    //     Ok(())
-    // }
+    pub fn take_task(ctx: Context<TakeTask>) -> Result<()> {
+        let task = &mut ctx.accounts.task; // Account for the task
+        if let Some(user_id) = task.user_id {
+            return Err(ErrorCode::TaskAlreadyTaken.into());
+        }
+
+        task.user_id = Some(ctx.accounts.user.key());
+
+        task.status = TaskStatus::InProgress;
+
+        msg!("Task taken successfully by user: {:?}", ctx.accounts.user.key());
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -61,7 +65,7 @@ pub struct CreateTask<'info> {
 }
 
 #[account]
-#[derive(InitSpace)]
+#[derive(InitSpace, Debug)]
 pub struct Task {
     #[max_len(10)]
     name: String,
@@ -72,13 +76,18 @@ pub struct Task {
     #[max_len(10)]
     time_to_solve_s: u32,
     #[max_len(10)]
-    user_id: Option<String>,
+    user_id: Option<Pubkey>,
     #[max_len(10)]
     img_proof_hash: Option<String>,
     status: TaskStatus,
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(
+    AnchorSerialize, AnchorDeserialize,
+    InitSpace,
+    Clone, Debug,
+    serde::Serialize, serde::Deserialize,
+)]
 #[serde(rename_all = "PascalCase")]
 pub enum TaskStatus {
     Pending,
@@ -100,9 +109,20 @@ impl Task {
         1; // status: 1 byte (enum is stored as a single byte)
 }
 
+#[derive(Accounts, Debug)]
+pub struct TakeTask<'info> {
+    #[account(mut)]
+    user: Signer<'info>,
+    #[account(mut)]
+    task: Account<'info, Task>,
+}
+
+
 #[error_code]
 pub enum ErrorCode {
     #[msg("You are not authorized to perform this action.")]
     Unauthorized,
+    #[msg("Task already taken")]
+    TaskAlreadyTaken
 }
 
