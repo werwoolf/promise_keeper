@@ -1191,6 +1191,7 @@ name = "promise_keeper"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "serde",
 ]
 
 [[package]]
