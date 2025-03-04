@@ -1,6 +1,5 @@
 use anchor_lang::prelude::*;
 use std::mem::size_of;
-use anchor_lang::prelude::borsh::{BorshDeserialize, BorshSerialize};
 
 declare_id!("ARKDUPvSk7fVmY676dLctbqDfncxy6SPiTVhy8zJabCC");
 
@@ -25,13 +24,15 @@ pub mod promise_keeper {
             user_id: None,
             img_proof_hash: None,
             status: TaskStatus::Pending,
+            approve_votes: vec![],
+            disapprove_votes: vec![],
         };
 
         Ok(())
     }
 
     pub fn take_task(ctx: Context<TakeTask>) -> Result<()> {
-        let task = &mut ctx.accounts.task; // Account for the task
+        let task = &mut ctx.accounts.task;
         if let Some(user_id) = task.user_id {
             return Err(ErrorCode::TaskAlreadyTaken.into());
         }
@@ -44,12 +45,31 @@ pub mod promise_keeper {
 
         Ok(())
     }
+
+    pub fn finish_task(ctx: Context<FinishTask>, img_proof_hash: String) -> Result<()> {
+        let task = &mut ctx.accounts.task;
+        task.status = TaskStatus::Voting;
+        task.img_proof_hash = Some(img_proof_hash);
+
+        Ok(())
+    }
+
+    pub fn vote_task(ctx: Context<VoteTask>, approve: u8) -> Result<()> {
+        println!("---> {approve}");
+        let task = &mut ctx.accounts.task;
+
+        if approve != 0 {
+            task.approve_votes.push(ctx.accounts.user.key());
+        } else {
+            task.approve_votes.push(ctx.accounts.user.key());
+        }
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
 #[instruction(name: String)]
-#[instruction(description: String)]
-#[instruction(time_to_solve_s: u32)]
 pub struct CreateTask<'info> {
     #[account(
         init,
@@ -80,15 +100,13 @@ pub struct Task {
     #[max_len(10)]
     img_proof_hash: Option<String>,
     status: TaskStatus,
+    #[max_len(9)]
+    approve_votes: Vec<Pubkey>,
+    #[max_len(9)]
+    disapprove_votes: Vec<Pubkey>,
 }
 
-#[derive(
-    AnchorSerialize, AnchorDeserialize,
-    InitSpace,
-    Clone, Debug,
-    serde::Serialize, serde::Deserialize,
-)]
-#[serde(rename_all = "PascalCase")]
+#[derive(InitSpace, Clone, Debug, AnchorDeserialize, AnchorSerialize)]
 pub enum TaskStatus {
     Pending,
     InProgress,
@@ -102,15 +120,34 @@ impl Task {
     pub const SIZE: usize = 8 + // discriminator
         4 + 10 + // name: length prefix (4) + max length (10)
         4 + 100 + // description: length prefix (4) + max length (100)
-        1 + 8 + // due_date: 1 byte for Option + 8 bytes for u64
+        1 + 8 + // due_date: Option<u64> (1 byte for tag + 8 bytes for u64)
         4 + // time_to_solve_s: u32
-        1 + 4 + 10 + // user_id: 1 byte for Option + length prefix (4) + max length (10)
-        1 + 4 + 10 + // img_proof_hash: same as above
-        1; // status: 1 byte (enum is stored as a single byte)
+        1 + 32 + // user_id: Option<Pubkey> (1 byte for tag + 32 bytes for Pubkey)
+        1 + 4 + 10 + // img_proof_hash: Option<String> (1 byte for tag + 4 bytes for length + 10 bytes for data)
+        1 + // status: TaskStatus
+        4 + (32 * 9) + // approve_votes: Vec<Pubkey> (4 bytes for length + 9 * 32 bytes for Pubkeys)
+        4 + (32 * 9); // disapprove_votes: Vec<Pubkey> (same as above)
 }
 
 #[derive(Accounts, Debug)]
 pub struct TakeTask<'info> {
+    #[account(mut)]
+    user: Signer<'info>,
+    #[account(mut)]
+    task: Account<'info, Task>,
+}
+
+#[derive(Accounts, Debug)]
+#[instruction(img_proof_hash: String)]
+pub struct FinishTask<'info> {
+    #[account(mut)]
+    user: Signer<'info>,
+    #[account(mut)]
+    task: Account<'info, Task>,
+}
+
+#[derive(Accounts, Debug)]
+pub struct VoteTask<'info> {
     #[account(mut)]
     user: Signer<'info>,
     #[account(mut)]
@@ -123,6 +160,6 @@ pub enum ErrorCode {
     #[msg("You are not authorized to perform this action.")]
     Unauthorized,
     #[msg("Task already taken")]
-    TaskAlreadyTaken
+    TaskAlreadyTaken,
 }
 

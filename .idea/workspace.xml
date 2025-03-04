@@ -8,10 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c70ca9c-63e0-48ca-8746-95b2878f12bc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tests/promise_keeper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +37,15 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Mocha.promise_keeper.Is initialized!.executor": "Run",
+    "Mocha.promise_keeper.Is runs the constructor.executor": "Run",
+    "Mocha.promise_keeper.Should create task.executor": "Run",
+    "Mocha.promise_keeper.Should finish task.executor": "Run",
+    "Mocha.promise_keeper.Should get all tasks.executor": "Run",
+    "Mocha.promise_keeper.Should take task.executor": "Run",
+    "Mocha.promise_keeper.Should vote task.executor": "Run",
     "Mocha.promise_keeper.executor": "Run",
+    "Mocha.promise_keeper.should all.executor": "Run",
+    "Mocha.promise_keeper.should finish task.executor": "Run",
     "Mocha.promise_keeper.should take task.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
@@ -49,10 +59,14 @@
     "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
     "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "language.rust.cargo.check",
     "ts.external.directory.path": "/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/typescript/lib"
   }
 }]]></component>
-  <component name="RunManager" selected="Mocha.promise_keeper.should take task">
+  <component name="RsExternalLinterProjectSettings">
+    <option name="runOnTheFly" value="true" />
+  </component>
+  <component name="RunManager" selected="Mocha.promise_keeper.Should vote task">
     <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -63,14 +77,32 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
+      </envs>
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method v="2" />
+    </configuration>
     <configuration name="promise_keeper" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
       <working-directory>$PROJECT_DIR$</working-directory>
       <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
+      </envs>
       <ui>bdd</ui>
-      <extra-mocha-options />
+      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
       <test-kind>SUITE</test-kind>
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
       <test-names>
@@ -78,44 +110,97 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.Is initialized!" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+    <configuration name="promise_keeper.Should create task" type="mocha-javascript-test-runner" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
       <working-directory>$PROJECT_DIR$</working-directory>
       <pass-parent-env>true</pass-parent-env>
-      <ui>bdd</ui>
-      <extra-mocha-options />
-      <test-kind>TEST</test-kind>
-      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
-      <test-names>
-        <name value="promise_keeper" />
-        <name value="Is initialized!" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="promise_keeper.should take task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
+      </envs>
       <ui>bdd</ui>
       <extra-mocha-options>--require ts-node/register</extra-mocha-options>
       <test-kind>TEST</test-kind>
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
       <test-names>
         <name value="promise_keeper" />
-        <name value="should take task" />
+        <name value="Should create task" />
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="promise_keeper.Should finish task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
+      <test-names>
+        <name value="promise_keeper" />
+        <name value="Should finish task" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="promise_keeper.Should get all tasks" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
+      <test-names>
+        <name value="promise_keeper" />
+        <name value="Should get all tasks" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="promise_keeper.Should vote task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
+      <test-names>
+        <name value="promise_keeper" />
+        <name value="Should vote task" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Mocha.promise_keeper.Should create task" />
+      <item itemvalue="Mocha.promise_keeper.Should vote task" />
+      <item itemvalue="Mocha.promise_keeper" />
+      <item itemvalue="Mocha.promise_keeper.Should finish task" />
+      <item itemvalue="Mocha.promise_keeper.Should get all tasks" />
+      <item itemvalue="npm.test" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Mocha.promise_keeper.should take task" />
-        <item itemvalue="Mocha.promise_keeper.Is initialized!" />
-        <item itemvalue="npm.test" />
+        <item itemvalue="Mocha.promise_keeper.Should vote task" />
+        <item itemvalue="Mocha.promise_keeper.Should get all tasks" />
+        <item itemvalue="Mocha.promise_keeper.Should finish task" />
         <item itemvalue="Mocha.promise_keeper" />
+        <item itemvalue="Mocha.promise_keeper.Should create task" />
       </list>
     </recent_temporary>
   </component>
@@ -135,11 +220,18 @@
       <workItem from="1740511494179" duration="17000" />
       <workItem from="1740844449570" duration="4463000" />
       <workItem from="1740858042685" duration="16296000" />
-      <workItem from="1740940883441" duration="2142000" />
+      <workItem from="1740940883441" duration="3606000" />
+      <workItem from="1741027701551" duration="1042000" />
+      <workItem from="1741029341259" duration="2297000" />
+      <workItem from="1741112592528" duration="5445000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
