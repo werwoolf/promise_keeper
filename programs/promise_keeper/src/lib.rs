@@ -3,6 +3,13 @@ use std::mem::size_of;
 
 declare_id!("ARKDUPvSk7fVmY676dLctbqDfncxy6SPiTVhy8zJabCC");
 
+//todo: authorization
+// due date
+// stale tasks
+// logic for changing task status after here are 5 votes for one result
+// prevent double voting
+// store due date in decimal
+
 #[program]
 pub mod promise_keeper {
     use super::*;
@@ -13,14 +20,13 @@ pub mod promise_keeper {
         description: String,
         time_to_solve_s: u32,
     ) -> Result<()> {
-        let mut task = &mut ctx.accounts.task;
-        let bump = ctx.bumps.task;
+        let task = &mut ctx.accounts.task;
 
         **task = Task {
             name,
             description,
-            due_date: None,
-            time_to_solve_s: 259_200,
+            due_date_s: None,
+            time_to_solve_s,
             user_id: None,
             img_proof_hash: None,
             status: TaskStatus::Pending,
@@ -33,21 +39,28 @@ pub mod promise_keeper {
 
     pub fn take_task(ctx: Context<TakeTask>) -> Result<()> {
         let task = &mut ctx.accounts.task;
-        if let Some(user_id) = task.user_id {
+        if task.user_id.is_some() {
             return Err(ErrorCode::TaskAlreadyTaken.into());
         }
 
         task.user_id = Some(ctx.accounts.user.key());
-
         task.status = TaskStatus::InProgress;
+        task.due_date_s = Some(Clock::get()?.unix_timestamp as u64 + task.time_to_solve_s as u64);
 
-        msg!("Task taken successfully by user: {:?}", ctx.accounts.user.key());
+        msg!(
+            "Task taken successfully by user: {:?}",
+            ctx.accounts.user.key()
+        );
 
         Ok(())
     }
 
     pub fn finish_task(ctx: Context<FinishTask>, img_proof_hash: String) -> Result<()> {
         let task = &mut ctx.accounts.task;
+        if task.status != TaskStatus::InProgress {
+            return Err(ErrorCode::CanNotFinishTask.into());
+        }
+
         task.status = TaskStatus::Voting;
         task.img_proof_hash = Some(img_proof_hash);
 
@@ -55,13 +68,16 @@ pub mod promise_keeper {
     }
 
     pub fn vote_task(ctx: Context<VoteTask>, approve: u8) -> Result<()> {
-        println!("---> {approve}");
         let task = &mut ctx.accounts.task;
+
+        if task.status != TaskStatus::Voting {
+            return Err(ErrorCode::CanNotVoteTask.into());
+        }
 
         if approve != 0 {
             task.approve_votes.push(ctx.accounts.user.key());
         } else {
-            task.approve_votes.push(ctx.accounts.user.key());
+            task.disapprove_votes.push(ctx.accounts.user.key());
         }
 
         Ok(())
@@ -92,7 +108,7 @@ pub struct Task {
     #[max_len(100)]
     description: String,
     #[max_len(10)]
-    due_date: Option<u64>,
+    due_date_s: Option<u64>,
     #[max_len(10)]
     time_to_solve_s: u32,
     #[max_len(10)]
@@ -106,7 +122,7 @@ pub struct Task {
     disapprove_votes: Vec<Pubkey>,
 }
 
-#[derive(InitSpace, Clone, Debug, AnchorDeserialize, AnchorSerialize)]
+#[derive(InitSpace, Clone, Debug, AnchorDeserialize, AnchorSerialize, PartialEq)]
 pub enum TaskStatus {
     Pending,
     InProgress,
@@ -154,12 +170,23 @@ pub struct VoteTask<'info> {
     task: Account<'info, Task>,
 }
 
-
 #[error_code]
 pub enum ErrorCode {
     #[msg("You are not authorized to perform this action.")]
     Unauthorized,
-    #[msg("Task already taken")]
-    TaskAlreadyTaken,
-}
 
+    #[msg("Only task with status \"In progress\" can be finished.")]
+    CanNotFinishTask,
+
+    #[msg("Only task with status \"Voting\" can be voted.")]
+    CanNotVoteTask,
+
+    #[msg("You have already voted this task.")]
+    TaskAlreadyVoted,
+
+    #[msg("Task already taken.")]
+    TaskAlreadyTaken,
+
+    #[msg("The task time has expired.")]
+    TaskStale,
+}
