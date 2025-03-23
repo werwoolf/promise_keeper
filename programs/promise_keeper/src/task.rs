@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use crate::defaults::{TASK_IDENTIFIER, TASK_COUNTER_IDENTIFIER};
 use crate::task_counter::TasksCounter;
 
 #[derive(Accounts)]
@@ -9,7 +10,7 @@ pub struct CreateTask<'info> {
         payer = authority,
         space = Task::SIZE,
         seeds = [
-            b"task".as_ref(), 
+            TASK_IDENTIFIER, 
             &counter.data.to_le_bytes()
         ],
         bump
@@ -17,7 +18,7 @@ pub struct CreateTask<'info> {
     pub(crate) task: Account<'info, Task>,
     #[account(mut)]
     authority: Signer<'info>,
-    #[account(mut, seeds = [b"task_counter"], bump)]
+    #[account(mut, seeds = [TASK_COUNTER_IDENTIFIER], bump)]
     pub(crate) counter: Account<'info, TasksCounter>,
     system_program: Program<'info, System>,
 }

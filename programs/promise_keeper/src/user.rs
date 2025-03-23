@@ -1,3 +1,4 @@
+use crate::defaults::USER_IDENTIFIER;
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -7,7 +8,7 @@ pub struct CreateUser<'info> {
         init_if_needed,
         payer = authority,
         space = User::SIZE,
-        seeds = [b"user".as_ref(), &authority.key().as_ref()],
+        seeds = [USER_IDENTIFIER, &authority.key().as_ref()],
         bump
     )]
     pub(crate) user: Account<'info, User>,

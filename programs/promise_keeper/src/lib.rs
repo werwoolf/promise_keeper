@@ -1,6 +1,7 @@
 pub mod task;
 pub mod task_counter;
 pub mod user;
+mod defaults;
 
 use anchor_lang::prelude::*;
 use cid::Cid;
@@ -11,10 +12,9 @@ use user::*;
 declare_id!("3BsTL53Aab3un682i8sjPeyQSgPMhXmwM3aDv7Py3gR9");
 
 //todo: authorization sign creation
+// auto init counter
 // account
 // type state ??
-// use constants
-// auto init counter
 // proper status string type
 
 #[program]

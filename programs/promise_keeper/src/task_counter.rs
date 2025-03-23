@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use crate::defaults::TASK_COUNTER_IDENTIFIER;
 
 #[account]
 #[derive(InitSpace, Debug)]
@@ -12,7 +13,7 @@ pub struct InitTaskCounter<'info> {
         init,
         payer = authority,
         space = 8 + 8,
-        seeds = [b"task_counter"],
+        seeds = [TASK_COUNTER_IDENTIFIER],
         bump
     )]
     pub(crate) counter: Account<'info, TasksCounter>,
