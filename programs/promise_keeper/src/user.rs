@@ -6,7 +6,7 @@ pub struct CreateUser<'info> {
     #[account(
         init_if_needed,
         payer = authority,
-        space = std::mem::size_of::<User>() + 8,
+        space = User::SIZE,
         seeds = [b"user".as_ref(), &authority.key().as_ref()],
         bump
     )]
@@ -19,10 +19,18 @@ pub struct CreateUser<'info> {
 #[account]
 #[derive(InitSpace, Debug)]
 pub struct User {
-    #[max_len(10)]
+    #[max_len(20)]
     pub(crate) nickname: String,
     pub(crate) birthdate: Option<u64>,
-    #[max_len(10)]
+    #[max_len(46)]
     pub(crate) avatar_hash: Option<String>,
     pub(crate) registration_time: u64,
+}
+
+impl User {
+    pub const SIZE: usize = 8 + // discriminator
+        4 + 20 + // nickname: length prefix (4) + max length (20)
+        1 + 8 + // birthdate: Option<u64> (1 byte for tag + 8 bytes for u64)
+        1 + 46 + // avatar_hash: ength prefix (4) + max length (46)
+        8; // registration_time u64
 }

@@ -36,11 +36,9 @@ pub mod promise_keeper {
             || avatar_hash
                 .clone()
                 .is_some_and(|hash| Cid::try_from(hash).is_err())
-            || birthdate.is_some_and(|date| (date < 1_000_000_000) || (timestamp < date))
         {
             return Err(ErrorCode::InvalidData.into());
         }
-
 
         **user = User {
             nickname,
