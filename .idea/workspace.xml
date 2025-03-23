@@ -8,17 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c70ca9c-63e0-48ca-8746-95b2878f12bc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/init_tasks_counter.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/programs/promise_keeper/src/task.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/programs/promise_keeper/src/task_counter.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/promise_keeper/src/user.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Anchor.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Anchor.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/idl/promise_keeper.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/types/promise_keeper.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/programs/promise_keeper/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tests/promise_keeper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,8 +27,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Rust File" />
         <option value="TypeScript File" />
+        <option value="Rust File" />
       </list>
     </option>
   </component>
@@ -49,12 +48,26 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Mocha.Unnamed.executor": "Run",
     "Mocha.promise_keeper.Is initialized!.executor": "Run",
     "Mocha.promise_keeper.Is runs the constructor.executor": "Run",
+    "Mocha.promise_keeper.Should create task with valid data.executor": "Run",
     "Mocha.promise_keeper.Should create task.executor": "Run",
+    "Mocha.promise_keeper.Should find counter account .executor": "Run",
     "Mocha.promise_keeper.Should finish task.executor": "Run",
     "Mocha.promise_keeper.Should get all tasks.executor": "Run",
+    "Mocha.promise_keeper.Should not create task with invalid data.executor": "Run",
+    "Mocha.promise_keeper.Should not finish someones else task.executor": "Run",
+    "Mocha.promise_keeper.Should not finish task with wrong image proof hash.executor": "Run",
+    "Mocha.promise_keeper.Should not take already taken task.executor": "Run",
+    "Mocha.promise_keeper.Should not task with non \"In progress status\".executor": "Run",
+    "Mocha.promise_keeper.Should not vote one task twice.executor": "Run",
+    "Mocha.promise_keeper.Should not vote own task.executor": "Run",
+    "Mocha.promise_keeper.Should not vote task with non \"Voting\" status.executor": "Run",
     "Mocha.promise_keeper.Should take task.executor": "Run",
+    "Mocha.promise_keeper.Should update task counter.executor": "Run",
+    "Mocha.promise_keeper.Should vote task and change status to fail.executor": "Run",
+    "Mocha.promise_keeper.Should vote task and change status.executor": "Run",
     "Mocha.promise_keeper.Should vote task.executor": "Run",
     "Mocha.promise_keeper.executor": "Run",
     "Mocha.promise_keeper.should all.executor": "Run",
@@ -63,35 +76,69 @@
     "Mocha.promise_keeper.should finish task.executor": "Run",
     "Mocha.promise_keeper.should not create task with invalid data.executor": "Run",
     "Mocha.promise_keeper.should take task.executor": "Run",
+    "Mocha.tests/promise_keeper.ts.executor": "Run",
+    "Node.js Test Runner.promise_keeper_user_account.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/sergij/Desktop/my-projects/promise_keeper/target/idl",
+    "last_opened_file_path": "/Users/sergij/Desktop/my-projects/promise_keeper",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs.mocha.mocha_node_package_dir": "/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/mocha",
     "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
     "npm.test.executor": "Run",
     "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
     "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "language.rust",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "ts.external.directory.path": "/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/target/idl" />
     </key>
   </component>
   <component name="RsExternalLinterProjectSettings">
     <option name="runOnTheFly" value="true" />
   </component>
-  <component name="RunManager" selected="Mocha.promise_keeper.should find counter account ">
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="mocha-javascript-test-runner" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Mocha.tests/promise_keeper.ts">
+    <configuration name="promise_keeper_user_account" type="NodeJsTestRunner" temporary="true">
+      <node-interpreter value="project" />
+      <working-dir value="$PROJECT_DIR$" />
+      <language value="TYPE_SCRIPT" />
+      <typescript-loader value="TS_NODE" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/tests/promise_keeper.ts" />
+      <test-names>
+        <test-name value="promise_keeper_user_account" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="mocha-javascript-test-runner">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -105,24 +152,6 @@
       <test-kind>DIRECTORY</test-kind>
       <test-directory />
       <recursive>false</recursive>
-      <method v="2" />
-    </configuration>
-    <configuration name="promise_keeper" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <envs>
-        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
-      </envs>
-      <ui>bdd</ui>
-      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
-      <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
-      <test-names>
-        <name value="promise_keeper" />
-      </test-names>
       <method v="2" />
     </configuration>
     <configuration name="promise_keeper.Should create task" type="mocha-javascript-test-runner" nameIsGenerated="true">
@@ -144,7 +173,7 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.Should get all tasks" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+    <configuration name="promise_keeper.Should finish task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
@@ -159,11 +188,11 @@
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
       <test-names>
         <name value="promise_keeper" />
-        <name value="Should get all tasks" />
+        <name value="Should finish task" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.should create task account" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+    <configuration name="promise_keeper.Should not finish task with wrong image proof hash" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
@@ -178,11 +207,11 @@
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
       <test-names>
         <name value="promise_keeper" />
-        <name value="should create task account" />
+        <name value="Should not finish task with wrong image proof hash" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.should find counter account " type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+    <configuration name="promise_keeper.Should update task counter" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
@@ -197,11 +226,11 @@
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
       <test-names>
         <name value="promise_keeper" />
-        <name value="should find counter account " />
+        <name value="Should update task counter" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.should not create task with invalid data" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+    <configuration name="tests/promise_keeper.ts" type="mocha-javascript-test-runner" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
@@ -211,35 +240,39 @@
         <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
       </envs>
       <ui>bdd</ui>
-      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
-      <test-kind>TEST</test-kind>
+      <extra-mocha-options />
+      <test-kind>TEST_FILE</test-kind>
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
-      <test-names>
-        <name value="promise_keeper" />
-        <name value="should not create task with invalid data" />
-      </test-names>
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Mocha.tests/promise_keeper.ts" />
       <item itemvalue="Mocha.promise_keeper.Should create task" />
-      <item itemvalue="Mocha.promise_keeper.should create task account" />
-      <item itemvalue="Mocha.promise_keeper.should find counter account " />
-      <item itemvalue="Mocha.promise_keeper.should not create task with invalid data" />
-      <item itemvalue="Mocha.promise_keeper.Should get all tasks" />
-      <item itemvalue="Mocha.promise_keeper" />
+      <item itemvalue="Mocha.promise_keeper.Should finish task" />
+      <item itemvalue="Mocha.promise_keeper.Should not finish task with wrong image proof hash" />
+      <item itemvalue="Mocha.promise_keeper.Should update task counter" />
+      <item itemvalue="Node.js Test Runner.promise_keeper_user_account" />
+      <item itemvalue="npm.build" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Mocha.promise_keeper.should find counter account " />
-        <item itemvalue="Mocha.promise_keeper.should not create task with invalid data" />
-        <item itemvalue="Mocha.promise_keeper.Should get all tasks" />
-        <item itemvalue="Mocha.promise_keeper.should create task account" />
-        <item itemvalue="Mocha.promise_keeper" />
+        <item itemvalue="Mocha.promise_keeper.Should update task counter" />
+        <item itemvalue="Mocha.promise_keeper.Should not finish task with wrong image proof hash" />
+        <item itemvalue="Mocha.promise_keeper.Should finish task" />
+        <item itemvalue="Node.js Test Runner.promise_keeper_user_account" />
+        <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
   </component>
   <component name="RustProjectSettings">
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-WS-242.20224.426" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -269,6 +302,9 @@
       <workItem from="1742532334085" duration="2559000" />
       <workItem from="1742569014243" duration="11320000" />
       <workItem from="1742639630394" duration="16333000" />
+      <workItem from="1742662462009" duration="18911000" />
+      <workItem from="1742709478222" duration="4810000" />
+      <workItem from="1742715921649" duration="57000" />
     </task>
     <servers />
   </component>

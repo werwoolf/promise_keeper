@@ -4,7 +4,7 @@ import {BN} from "@coral-xyz/anchor";
 import {expect} from "chai";
 import {get} from "lodash";
 
-describe("promise_keeper_tasks", () => {
+describe("promise_keeper_task", () => {
     dotenv.config();
     const provider = anchor.AnchorProvider.local();
 
@@ -35,9 +35,8 @@ describe("promise_keeper_tasks", () => {
 
     const program = anchor.workspace.promise_keeper;
 
-    it('Should find counter account ', async () => {
+    it('Should find counter account', async () => {
         const pda = getTasksCounterPDA();
-
         const counterAccount = await program.account.tasksCounter.fetch(pda);
 
         expect(counterAccount).to.be.an('object');
@@ -480,3 +479,46 @@ describe("promise_keeper_tasks", () => {
 
     });
 });
+
+describe("promise_keeper_user_account", async () => {
+    dotenv.config();
+
+    const provider = anchor.AnchorProvider.local();
+    const user = new anchor.web3.Keypair();
+    const program = anchor.workspace.promise_keeper;
+
+    anchor.setProvider(provider);
+
+    before(async () => {
+        const signature = await provider.connection.requestAirdrop(user.publicKey, 20_000_000);
+        await provider.connection.confirmTransaction(signature);
+    })
+
+    it('Should get user account', async () => {
+        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [anchor.utils.bytes.utf8.encode("user"), user.publicKey.toBuffer()],
+            program.programId
+        );
+        console.log(Math.trunc(new Date().getTime() / 1100)) // 1742723139
+        try {
+            await program.methods.createUser("name", new BN(1742723139), "Qmc4YSiThkGVmKxzshZHCfgpLaCVBRuRzMDkqApXxZBwzG1")
+                .accounts({authority: user.publicKey})
+                .signers([user])
+                .rpc();
+        } catch (e) {
+            console.log(e)
+        }
+
+
+        const userAccount = await program.account.user.fetch(pda);
+        console.log(userAccount)
+
+        await program.methods.createUser("name", null, null)
+            .accounts({authority: user.publicKey})
+            .signers([user])
+            .rpc();
+
+        const userAccount1 = await program.account.user.fetch(pda);
+        console.log(userAccount1)
+    });
+})

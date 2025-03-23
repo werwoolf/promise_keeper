@@ -42,10 +42,6 @@ export type PromiseKeeper = {
               },
               {
                 "kind": "account",
-                "path": "authority"
-              },
-              {
-                "kind": "account",
                 "path": "counter.data",
                 "account": "tasksCounter"
               }
@@ -68,7 +64,15 @@ export type PromiseKeeper = {
                   116,
                   97,
                   115,
-                  107
+                  107,
+                  95,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  101,
+                  114
                 ]
               }
             ]
@@ -148,7 +152,15 @@ export type PromiseKeeper = {
                   116,
                   97,
                   115,
-                  107
+                  107,
+                  95,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  101,
+                  114
                 ]
               }
             ]
