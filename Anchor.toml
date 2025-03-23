@@ -1,12 +1,14 @@
 [toolchain]
+bpf = "bpfel-unknown-unknown"
 
 [features]
 resolution = true
 skip-lint = false
+seeds = true
 
 
 [programs.localnet]
-promise_keeper = "ARKDUPvSk7fVmY676dLctbqDfncxy6SPiTVhy8zJabCC"
+promise_keeper = "3BsTL53Aab3un682i8sjPeyQSgPMhXmwM3aDv7Py3gR9"
 
 [registry]
 url = "https://api.apr.dev"

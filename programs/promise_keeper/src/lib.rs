@@ -1,18 +1,27 @@
-use anchor_lang::prelude::*;
-use std::mem::size_of;
+pub mod task;
+pub mod task_counter;
 
-declare_id!("ARKDUPvSk7fVmY676dLctbqDfncxy6SPiTVhy8zJabCC");
+use anchor_lang::prelude::*;
+use task::*;
+use task_counter::*;
+
+declare_id!("3BsTL53Aab3un682i8sjPeyQSgPMhXmwM3aDv7Py3gR9");
 
 //todo: authorization
-// due date
-// stale tasks
-// logic for changing task status after here are 5 votes for one result
-// prevent double voting
-// store due date in decimal
+// account
+// type state ??
+// use constants
+// auto init counter
+// proper status string type
+// sign creation
 
 #[program]
 pub mod promise_keeper {
     use super::*;
+    use anchor_lang::error::Error::ProgramError;
+    use cid::Cid;
+
+    const VOTES_MAJORITY_LIMIT: u8 = 5;
 
     pub fn create_task(
         ctx: Context<CreateTask>,
@@ -21,7 +30,14 @@ pub mod promise_keeper {
         time_to_solve_s: u32,
     ) -> Result<()> {
         let task = &mut ctx.accounts.task;
+        let counter = &mut ctx.accounts.counter;
 
+        // todo: move to acc impl
+        if (name.len() < 3) || (description.len() < 3) || (time_to_solve_s < 3600) {
+            return Err(ErrorCode::InvalidData.into());
+        }
+
+        // todo: move to impl
         **task = Task {
             name,
             description,
@@ -33,6 +49,8 @@ pub mod promise_keeper {
             approve_votes: vec![],
             disapprove_votes: vec![],
         };
+
+        counter.data += 1;
 
         Ok(())
     }
@@ -47,19 +65,34 @@ pub mod promise_keeper {
         task.status = TaskStatus::InProgress;
         task.due_date_s = Some(Clock::get()?.unix_timestamp as u64 + task.time_to_solve_s as u64);
 
-        msg!(
-            "Task taken successfully by user: {:?}",
-            ctx.accounts.user.key()
-        );
-
         Ok(())
     }
 
     pub fn finish_task(ctx: Context<FinishTask>, img_proof_hash: String) -> Result<()> {
+        if Cid::try_from(img_proof_hash.clone()).is_err() {
+            return Err(ErrorCode::InvalidData.into());
+        }
+
+        let user = &mut ctx.accounts.user;
         let task = &mut ctx.accounts.task;
+        let due_date_s = task
+            .due_date_s
+            .ok_or::<ErrorCode>(ErrorCode::InternalError)?;
+
+        if due_date_s < Clock::get()?.unix_timestamp as u64 {
+            return Err(ErrorCode::TaskStale.into());
+        }
+
         if task.status != TaskStatus::InProgress {
             return Err(ErrorCode::CanNotFinishTask.into());
         }
+
+        require_keys_eq!(
+            user.key.key(),
+            task.user_id
+                .ok_or::<ErrorCode>(ErrorCode::CanNotFinishTask.into())?
+                .key()
+        );
 
         task.status = TaskStatus::Voting;
         task.img_proof_hash = Some(img_proof_hash);
@@ -69,109 +102,57 @@ pub mod promise_keeper {
 
     pub fn vote_task(ctx: Context<VoteTask>, approve: u8) -> Result<()> {
         let task = &mut ctx.accounts.task;
+        let user = &mut ctx.accounts.user;
+        let is_approved = approve != 0;
 
         if task.status != TaskStatus::Voting {
             return Err(ErrorCode::CanNotVoteTask.into());
         }
 
-        if approve != 0 {
+        require_keys_neq!(
+            user.key(),
+            task.user_id
+                .ok_or::<ErrorCode>(ErrorCode::CanNotFinishTask.into())?
+                .key()
+        );
+
+        let user_has_already_voted_task =
+            task.approve_votes.contains(&user.key()) || task.disapprove_votes.contains(&user.key());
+
+        if user_has_already_voted_task {
+            return Err(ErrorCode::CanNotVoteTaskSecondTime.into());
+        }
+
+        if is_approved {
             task.approve_votes.push(ctx.accounts.user.key());
         } else {
             task.disapprove_votes.push(ctx.accounts.user.key());
         }
 
+        // todo: impl task account
+        if task.approve_votes.len() >= VOTES_MAJORITY_LIMIT.into() {
+            task.status = TaskStatus::Success;
+        } else if task.disapprove_votes.len() >= 5 {
+            task.status = TaskStatus::Fail;
+        }
+
+        Ok(())
+    }
+
+    pub fn init_task_counter(ctx: Context<InitTaskCounter>) -> Result<()> {
+        let tasks_counter = &mut ctx.accounts.counter;
+
+        **tasks_counter = TasksCounter { data: 0 };
+
         Ok(())
     }
 }
 
-#[derive(Accounts)]
-#[instruction(name: String)]
-pub struct CreateTask<'info> {
-    #[account(
-        init,
-        payer = authority,
-        space = Task::SIZE,
-        seeds = [b"task", name.as_bytes()],
-        bump
-    )]
-    task: Account<'info, Task>,
-    #[account(mut)]
-    authority: Signer<'info>,
-    system_program: Program<'info, System>,
-}
-
-#[account]
-#[derive(InitSpace, Debug)]
-pub struct Task {
-    #[max_len(10)]
-    name: String,
-    #[max_len(100)]
-    description: String,
-    #[max_len(10)]
-    due_date_s: Option<u64>,
-    #[max_len(10)]
-    time_to_solve_s: u32,
-    #[max_len(10)]
-    user_id: Option<Pubkey>,
-    #[max_len(10)]
-    img_proof_hash: Option<String>,
-    status: TaskStatus,
-    #[max_len(9)]
-    approve_votes: Vec<Pubkey>,
-    #[max_len(9)]
-    disapprove_votes: Vec<Pubkey>,
-}
-
-#[derive(InitSpace, Clone, Debug, AnchorDeserialize, AnchorSerialize, PartialEq)]
-pub enum TaskStatus {
-    Pending,
-    InProgress,
-    Voting,
-    Stale,
-    Success,
-    Fail,
-}
-
-impl Task {
-    pub const SIZE: usize = 8 + // discriminator
-        4 + 10 + // name: length prefix (4) + max length (10)
-        4 + 100 + // description: length prefix (4) + max length (100)
-        1 + 8 + // due_date: Option<u64> (1 byte for tag + 8 bytes for u64)
-        4 + // time_to_solve_s: u32
-        1 + 32 + // user_id: Option<Pubkey> (1 byte for tag + 32 bytes for Pubkey)
-        1 + 4 + 10 + // img_proof_hash: Option<String> (1 byte for tag + 4 bytes for length + 10 bytes for data)
-        1 + // status: TaskStatus
-        4 + (32 * 9) + // approve_votes: Vec<Pubkey> (4 bytes for length + 9 * 32 bytes for Pubkeys)
-        4 + (32 * 9); // disapprove_votes: Vec<Pubkey> (same as above)
-}
-
-#[derive(Accounts, Debug)]
-pub struct TakeTask<'info> {
-    #[account(mut)]
-    user: Signer<'info>,
-    #[account(mut)]
-    task: Account<'info, Task>,
-}
-
-#[derive(Accounts, Debug)]
-#[instruction(img_proof_hash: String)]
-pub struct FinishTask<'info> {
-    #[account(mut)]
-    user: Signer<'info>,
-    #[account(mut)]
-    task: Account<'info, Task>,
-}
-
-#[derive(Accounts, Debug)]
-pub struct VoteTask<'info> {
-    #[account(mut)]
-    user: Signer<'info>,
-    #[account(mut)]
-    task: Account<'info, Task>,
-}
-
 #[error_code]
 pub enum ErrorCode {
+    #[msg("Check input data")]
+    InvalidData,
+
     #[msg("You are not authorized to perform this action.")]
     Unauthorized,
 
@@ -181,6 +162,9 @@ pub enum ErrorCode {
     #[msg("Only task with status \"Voting\" can be voted.")]
     CanNotVoteTask,
 
+    #[msg("You have already voted this task")]
+    CanNotVoteTaskSecondTime,
+
     #[msg("You have already voted this task.")]
     TaskAlreadyVoted,
 
@@ -189,4 +173,7 @@ pub enum ErrorCode {
 
     #[msg("The task time has expired.")]
     TaskStale,
+
+    #[msg("TInternal program error.")]
+    InternalError,
 }
