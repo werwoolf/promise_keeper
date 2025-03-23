@@ -1,4 +1,0 @@
-- get list of promises
-- get list of own promises
-- create a promise
-- make a promise

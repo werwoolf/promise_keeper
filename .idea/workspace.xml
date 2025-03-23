@@ -8,12 +8,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c70ca9c-63e0-48ca-8746-95b2878f12bc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/init_tasks_counter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/promise_keeper/src/task.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/promise_keeper/src/task_counter.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Anchor.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Anchor.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tests/promise_keeper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -29,43 +47,51 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Mocha.promise_keeper.Is initialized!.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.Is runs the constructor.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.Should create task.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.Should finish task.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.Should get all tasks.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.Should take task.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.Should vote task.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.should all.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.should finish task.executor&quot;: &quot;Run&quot;,
-    &quot;Mocha.promise_keeper.should take task.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/sergij/Desktop/my-projects/promise_keeper&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.mocha.mocha_node_package_dir&quot;: &quot;/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/mocha&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.test.executor&quot;: &quot;Run&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.cargo.check&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Mocha.promise_keeper.Is initialized!.executor": "Run",
+    "Mocha.promise_keeper.Is runs the constructor.executor": "Run",
+    "Mocha.promise_keeper.Should create task.executor": "Run",
+    "Mocha.promise_keeper.Should finish task.executor": "Run",
+    "Mocha.promise_keeper.Should get all tasks.executor": "Run",
+    "Mocha.promise_keeper.Should take task.executor": "Run",
+    "Mocha.promise_keeper.Should vote task.executor": "Run",
+    "Mocha.promise_keeper.executor": "Run",
+    "Mocha.promise_keeper.should all.executor": "Run",
+    "Mocha.promise_keeper.should create task account.executor": "Run",
+    "Mocha.promise_keeper.should find counter account .executor": "Run",
+    "Mocha.promise_keeper.should finish task.executor": "Run",
+    "Mocha.promise_keeper.should not create task with invalid data.executor": "Run",
+    "Mocha.promise_keeper.should take task.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/sergij/Desktop/my-projects/promise_keeper/target/idl",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.mocha.mocha_node_package_dir": "/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/mocha",
+    "nodejs_package_manager_path": "npm",
+    "npm.test.executor": "Run",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "language.rust",
+    "ts.external.directory.path": "/Users/sergij/Desktop/my-projects/promise_keeper/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/target/idl" />
+    </key>
+  </component>
   <component name="RsExternalLinterProjectSettings">
     <option name="runOnTheFly" value="true" />
   </component>
-  <component name="RunManager" selected="Mocha.promise_keeper.Should get all tasks">
+  <component name="RunManager" selected="Mocha.promise_keeper.should find counter account ">
     <configuration default="true" type="mocha-javascript-test-runner">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -118,25 +144,6 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.Should finish task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <envs>
-        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
-      </envs>
-      <ui>bdd</ui>
-      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
-      <test-kind>TEST</test-kind>
-      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
-      <test-names>
-        <name value="promise_keeper" />
-        <name value="Should finish task" />
-      </test-names>
-      <method v="2" />
-    </configuration>
     <configuration name="promise_keeper.Should get all tasks" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -156,7 +163,7 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.Should take task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+    <configuration name="promise_keeper.should create task account" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
@@ -171,11 +178,11 @@
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
       <test-names>
         <name value="promise_keeper" />
-        <name value="Should take task" />
+        <name value="should create task account" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="promise_keeper.Should vote task" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+    <configuration name="promise_keeper.should find counter account " type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
@@ -190,24 +197,43 @@
       <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
       <test-names>
         <name value="promise_keeper" />
-        <name value="Should vote task" />
+        <name value="should find counter account " />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="promise_keeper.should not create task with invalid data" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs>
+        <env name="ANCHOR_WALLET" value="$USER_HOME$/.config/solana/id.json" />
+      </envs>
+      <ui>bdd</ui>
+      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/tests/promise_keeper.ts</test-file>
+      <test-names>
+        <name value="promise_keeper" />
+        <name value="should not create task with invalid data" />
       </test-names>
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Mocha.promise_keeper.Should create task" />
-      <item itemvalue="Mocha.promise_keeper.Should take task" />
-      <item itemvalue="Mocha.promise_keeper.Should finish task" />
+      <item itemvalue="Mocha.promise_keeper.should create task account" />
+      <item itemvalue="Mocha.promise_keeper.should find counter account " />
+      <item itemvalue="Mocha.promise_keeper.should not create task with invalid data" />
       <item itemvalue="Mocha.promise_keeper.Should get all tasks" />
-      <item itemvalue="Mocha.promise_keeper.Should vote task" />
       <item itemvalue="Mocha.promise_keeper" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Mocha.promise_keeper.should find counter account " />
+        <item itemvalue="Mocha.promise_keeper.should not create task with invalid data" />
         <item itemvalue="Mocha.promise_keeper.Should get all tasks" />
-        <item itemvalue="Mocha.promise_keeper.Should take task" />
-        <item itemvalue="Mocha.promise_keeper.Should vote task" />
-        <item itemvalue="Mocha.promise_keeper.Should finish task" />
+        <item itemvalue="Mocha.promise_keeper.should create task account" />
         <item itemvalue="Mocha.promise_keeper" />
       </list>
     </recent_temporary>
@@ -236,7 +262,13 @@
       <workItem from="1741799182023" duration="950000" />
       <workItem from="1741800368784" duration="173000" />
       <workItem from="1741800545162" duration="5352000" />
-      <workItem from="1741974172790" duration="3392000" />
+      <workItem from="1741974172790" duration="15683000" />
+      <workItem from="1742411322625" duration="821000" />
+      <workItem from="1742487798690" duration="17000" />
+      <workItem from="1742498459350" duration="1652000" />
+      <workItem from="1742532334085" duration="2559000" />
+      <workItem from="1742569014243" duration="11320000" />
+      <workItem from="1742639630394" duration="16333000" />
     </task>
     <servers />
   </component>
