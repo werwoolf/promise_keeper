@@ -1,27 +1,57 @@
 pub mod task;
 pub mod task_counter;
+pub mod user;
+mod defaults;
 
 use anchor_lang::prelude::*;
+use cid::Cid;
 use task::*;
 use task_counter::*;
+use user::*;
 
 declare_id!("3BsTL53Aab3un682i8sjPeyQSgPMhXmwM3aDv7Py3gR9");
 
-//todo: authorization
+//todo: authorization sign creation
 // account
 // type state ??
-// use constants
-// auto init counter
 // proper status string type
-// sign creation
 
 #[program]
 pub mod promise_keeper {
     use super::*;
-    use anchor_lang::error::Error::ProgramError;
-    use cid::Cid;
-
+    use crate::user::{CreateUser, User};
     const VOTES_MAJORITY_LIMIT: u8 = 5;
+
+    pub fn create_user(
+        ctx: Context<CreateUser>,
+        nickname: String,
+        birthdate: Option<u64>,
+        avatar_hash: Option<String>,
+    ) -> Result<()> {
+        let user = &mut ctx.accounts.user;
+        let timestamp = Clock::get()?.unix_timestamp as u64;
+
+        if (nickname.len() < 3)
+            || avatar_hash
+                .clone()
+                .is_some_and(|hash| Cid::try_from(hash).is_err())
+        {
+            return Err(ErrorCode::InvalidData.into());
+        }
+
+        **user = User {
+            nickname,
+            birthdate,
+            avatar_hash,
+            authority: *ctx.accounts.authority.key,
+            registration_time: match user.registration_time > 0 {
+                true => user.registration_time,
+                false => timestamp,
+            },
+        };
+
+        Ok(())
+    }
 
     pub fn create_task(
         ctx: Context<CreateTask>,

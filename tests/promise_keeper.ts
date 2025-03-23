@@ -4,14 +4,14 @@ import {BN} from "@coral-xyz/anchor";
 import {expect} from "chai";
 import {get} from "lodash";
 
-describe("promise_keeper_tasks", () => {
+const validCID = "Qmc4YSiThkGVmKxzshZHCfgpLaCVBRuRzMDkqApXxZBwzG";
+
+describe("promise_keeper_task", () => {
     dotenv.config();
     const provider = anchor.AnchorProvider.local();
 
     anchor.setProvider(provider);
     const user = new anchor.web3.Keypair();
-
-    const validImgProofHash = "Qmc4YSiThkGVmKxzshZHCfgpLaCVBRuRzMDkqApXxZBwzG";
 
     const getTasksCounterPDA = () => {
         const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -35,9 +35,8 @@ describe("promise_keeper_tasks", () => {
 
     const program = anchor.workspace.promise_keeper;
 
-    it('Should find counter account ', async () => {
+    it('Should find counter account', async () => {
         const pda = getTasksCounterPDA();
-
         const counterAccount = await program.account.tasksCounter.fetch(pda);
 
         expect(counterAccount).to.be.an('object');
@@ -201,7 +200,7 @@ describe("promise_keeper_tasks", () => {
             .signers([user])
             .rpc();
 
-        await program.methods.finishTask(validImgProofHash)
+        await program.methods.finishTask(validCID)
             .accounts({user: user.publicKey, task: taskPDA})
             .signers([user])
             .rpc();
@@ -209,7 +208,7 @@ describe("promise_keeper_tasks", () => {
         const task = await program.account.task.fetch(taskPDA);
 
         expect(task).to.have.property('status').that.includes.keys('voting');
-        expect(task).to.have.property('imgProofHash').that.equals(validImgProofHash);
+        expect(task).to.have.property('imgProofHash').that.equals(validCID);
     });
 
     it('Should not finish task with wrong image proof hash', async () => {
@@ -267,7 +266,7 @@ describe("promise_keeper_tasks", () => {
         expect(task).to.have.property('status').that.includes.keys('inProgress');
 
         try {
-            await program.methods.finishTask(validImgProofHash)
+            await program.methods.finishTask(validCID)
                 .accounts({user: user.publicKey, task: taskPDA})
                 .signers([user])
                 .rpc();
@@ -291,7 +290,7 @@ describe("promise_keeper_tasks", () => {
             .signers([user])
             .rpc();
 
-        await program.methods.finishTask(validImgProofHash)
+        await program.methods.finishTask(validCID)
             .accounts({user: user.publicKey, task: taskPDA})
             .signers([user])
             .rpc();
@@ -301,7 +300,7 @@ describe("promise_keeper_tasks", () => {
         expect(task).to.have.property('status').that.includes.keys('voting');
 
         try {
-            await program.methods.finishTask(validImgProofHash)
+            await program.methods.finishTask(validCID)
                 .accounts({user: user.publicKey, task: taskPDA})
                 .signers([user])
                 .rpc();
@@ -324,7 +323,7 @@ describe("promise_keeper_tasks", () => {
             .signers([user])
             .rpc();
 
-        await program.methods.finishTask(validImgProofHash)
+        await program.methods.finishTask(validCID)
             .accounts({user: user.publicKey, task: taskPDA})
             .signers([user])
             .rpc();
@@ -362,7 +361,7 @@ describe("promise_keeper_tasks", () => {
             .signers([user])
             .rpc();
 
-        await program.methods.finishTask(validImgProofHash)
+        await program.methods.finishTask(validCID)
             .accounts({user: user.publicKey, task: taskPDA})
             .signers([user])
             .rpc();
@@ -402,7 +401,7 @@ describe("promise_keeper_tasks", () => {
             .signers([user])
             .rpc();
 
-        await program.methods.finishTask(validImgProofHash)
+        await program.methods.finishTask(validCID)
             .accounts({user: user.publicKey, task: taskPDA})
             .signers([user])
             .rpc();
@@ -443,7 +442,7 @@ describe("promise_keeper_tasks", () => {
             .signers([user])
             .rpc();
 
-        await program.methods.finishTask(validImgProofHash)
+        await program.methods.finishTask(validCID)
             .accounts({user: user.publicKey, task: taskPDA})
             .signers([user])
             .rpc();
@@ -480,3 +479,102 @@ describe("promise_keeper_tasks", () => {
 
     });
 });
+
+describe("promise_keeper_user_account", async () => {
+    dotenv.config();
+
+    const provider = anchor.AnchorProvider.local();
+    const user = new anchor.web3.Keypair();
+    const program = anchor.workspace.promise_keeper;
+
+    anchor.setProvider(provider);
+
+    before(async () => {
+        const signature = await provider.connection.requestAirdrop(user.publicKey, 20_000_000);
+        await provider.connection.confirmTransaction(signature);
+    })
+
+    it('Should create user account', async () => {
+        const name = "Serhii Testovyy";
+
+        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [anchor.utils.bytes.utf8.encode("user"), user.publicKey.toBuffer()],
+            program.programId
+        );
+
+        await program.methods.createUser(name, null, validCID)
+            .accounts({authority: user.publicKey})
+            .signers([user])
+            .rpc();
+
+        const userAccount1 = await program.account.user.fetch(pda);
+
+        await program.methods.createUser(name, null, validCID)
+            .accounts({authority: user.publicKey})
+            .signers([user])
+            .rpc();
+
+        const userAccount2 = await program.account.user.fetch(pda);
+
+        expect(userAccount1).to.have.property("nickname").equals(name);
+        expect(userAccount1).to.be.deep.equal(userAccount2);
+    });
+
+    it('Should update user account', async () => {
+        const name = "Serhii Testovyy";
+        const newName = "Serhii Testovyy updated";
+
+        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [anchor.utils.bytes.utf8.encode("user"), user.publicKey.toBuffer()],
+            program.programId
+        );
+
+        await program.methods.createUser(name, null, validCID)
+            .accounts({authority: user.publicKey})
+            .signers([user])
+            .rpc();
+
+        const userAccount1 = await program.account.user.fetch(pda);
+
+        expect(userAccount1).to.have.property("nickname").equals(name);
+        expect(userAccount1).to.have.property("avatarHash").equals(validCID);
+
+        await program.methods.createUser(newName, null, null)
+            .accounts({authority: user.publicKey})
+            .signers([user])
+            .rpc();
+
+        const userAccount2 = await program.account.user.fetch(pda);
+
+        expect(userAccount2).to.have.property("nickname").equals(newName);
+        expect(userAccount2).to.have.property("avatarHash").equals(null);
+    });
+
+    it('Should not create user account with invalid data', async () => {
+        const wrongSets: Array<[string, BN | null, string | null]> = [
+            ["na", null, validCID],
+            ["name", null, ""],
+            ["name", null, validCID + "123"],
+        ]
+
+        for await (const set of wrongSets) {
+            const [name, birthDate, avatarHash] = set;
+            try {
+                await program.methods.createUser(name, birthDate, avatarHash)
+                    .accounts({authority: user.publicKey})
+                    .signers([user])
+                    .rpc();
+
+                throw new Error(`Program should fail with values: ${set.join(",")}`);
+            } catch (e) {
+                expect(get(e, "error.errorCode.code", "")).to.equal("InvalidData");
+            }
+        }
+    });
+
+    it('Should get all accounts', async () => {
+        const users = await program.account.user.all();
+
+        console.log(users)
+    });
+})

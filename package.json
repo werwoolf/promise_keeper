@@ -3,7 +3,8 @@
   "scripts": {
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
-    "test": "ts-mocha ./tests/**/*.ts"
+    "test": "ts-mocha ./tests/**/*.ts",
+    "build": "anchor build && cp -r target/idl app && cp -r target/types app"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",
