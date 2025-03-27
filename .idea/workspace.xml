@@ -8,24 +8,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c70ca9c-63e0-48ca-8746-95b2878f12bc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/components/FileInput.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/components/ProfileButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/components/ProfileModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/queries/profile.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/idl/promise_keeper.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/idl/promise_keeper.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pnpm-lock.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/components/CreateTaskModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/CreateTaskModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/components/FinishTaskModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/FinishTaskModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/components/TaskInfoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/TaskInfoModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/components/TaskListItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/TaskListItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/queries/task.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/components/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/Button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/components/FileInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/FileInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/components/ProfileButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/ProfileButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/components/ProfileModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/components/ProfileModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/queries/profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/queries/profile.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/types/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/promise_keeper.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/task.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/task.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/user.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tests/promise_keeper.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +303,7 @@
       <workItem from="1742662462009" duration="18911000" />
       <workItem from="1742709478222" duration="4810000" />
       <workItem from="1742715921649" duration="57000" />
-      <workItem from="1743075028951" duration="6667000" />
+      <workItem from="1743075028951" duration="13219000" />
     </task>
     <servers />
   </component>

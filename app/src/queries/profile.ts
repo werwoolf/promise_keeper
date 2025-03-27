@@ -14,13 +14,8 @@ export const useGetProfileQuery = (disabled = false) => {
         queryKey: [USER_PROFILE_QK],
         staleTime: 1000 * 60 * 60 * 3,
         queryFn: async () => {
-            if (!wallet?.publicKey || !wallet?.signTransaction || !program) { // todo: error popup
-                return {
-                    error: {
-                        status: 'UNAUTHORIZED',
-                        data: 'Wallet not connected or missing signing method',
-                    },
-                };
+            if (!wallet?.publicKey || !wallet?.signTransaction || !program) {// todo: error popup
+                throw new Error("Wallet not connected or missing signing method");
             }
 
             const [pda] = anchor.web3.PublicKey.findProgramAddressSync(

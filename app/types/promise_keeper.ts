@@ -488,6 +488,10 @@ export type PromiseKeeper = {
         "kind": "struct",
         "fields": [
           {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
             "name": "nickname",
             "type": "string"
           },

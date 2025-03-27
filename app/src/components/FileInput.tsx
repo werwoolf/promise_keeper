@@ -5,10 +5,11 @@ export type Value = { name: string, content: ArrayBuffer | string };
 
 interface FileInputProps {
     placeholder: string;
+    showPreview?: boolean;
     onChange: (cid: string) => void
 }
 
-const FileInput: FC<FileInputProps> = ({placeholder, onChange}) => {
+const FileInput: FC<FileInputProps> = ({placeholder, showPreview, onChange}) => {
     const [uploadedFile, setUploadedFile] = useState<Value>();
 
     const handleLoadImage = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +36,7 @@ const FileInput: FC<FileInputProps> = ({placeholder, onChange}) => {
                 className="block border border-dashed border-gray-500 rounded text-center cursor-pointer hover:bg-gray-100 p-3"
             >
                 {
-                    uploadedFile
+                    (uploadedFile && showPreview)
                         ? <div className="flex flex-row gap-6 items-center">
                             <img src={uploadedFile?.content?.toString()} alt={uploadedFile.name}/>
                             <span>{uploadedFile.name}</span>

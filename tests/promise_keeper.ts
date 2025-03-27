@@ -571,4 +571,10 @@ describe("promise_keeper_user_account", async () => {
             }
         }
     });
+
+    it('Should get all accounts', async () => {
+        const users = await program.account.user.all();
+
+        console.log(users)
+    });
 })

@@ -43,6 +43,7 @@ pub mod promise_keeper {
             nickname,
             birthdate,
             avatar_hash,
+            authority: *ctx.accounts.authority.key,
             registration_time: match user.registration_time > 0 {
                 true => user.registration_time,
                 false => timestamp,

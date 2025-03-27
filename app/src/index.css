@@ -46,7 +46,7 @@ button {
     font-weight: 600;
     color: white;
     font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: aquamarine !important;
+    background-color: #099e6c !important;
     transition: border-color 0.25s;
 }
 
