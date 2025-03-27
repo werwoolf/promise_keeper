@@ -1,8 +1,8 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
-import {useBlockchain} from "./hooks/useBlockchain.ts";
-import {queryClient} from "./main.tsx";
+import {useBlockchain} from "../hooks/useBlockchain.ts";
+import {queryClient} from "../main.tsx";
 import {PublicKey} from "@solana/web3.js";
-import {CreateTaskData, FinishTaskData, VoteTaskData} from "./types.ts";
+import {CreateTaskData, FinishTaskData, VoteTaskData} from "../types.ts";
 
 const TASKS_LIST_QK = "tasks-list-query-key";
 

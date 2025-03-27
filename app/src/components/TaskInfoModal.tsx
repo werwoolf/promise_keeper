@@ -2,7 +2,7 @@ import {ModalContentWrapper} from "./ModalContentWrapper.tsx";
 import {Task} from "../App.tsx";
 import {FC, ReactNode} from "react";
 import {capitalize} from "lodash";
-import {Disclosure} from "@headlessui/react";
+import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/react";
 import classNames from "classnames";
 import {useUserGetImgUrlFromCID} from "../hooks/userGetImgUrlFromCID.ts";
 import dayjs from "dayjs";
@@ -44,10 +44,10 @@ const TaskInfoModal: FC<TaskInfoModalProps> = ({open, task, onClose}) => {
                     {account.userId ? account.userId.toString() : "-"}
                 </InfoItem>
                 <InfoItem title="Due date">
-                    {account.dueDateS ? dayjs(parseInt(account.dueDateS, 16) * 1000).format("DD-MM-YYYY, HH:mm:ss") : "-"}
+                    {account.dueDateS ? dayjs(parseInt(account.dueDateS.toString(), 16) * 1000).format("DD-MM-YYYY, HH:mm:ss") : "-"}
                 </InfoItem>
                 <Disclosure as="div">
-                    <Disclosure.Button
+                    <DisclosureButton
                         as="div"
                         disabled={!account.approveVotes.length}
                         className={classNames({"cursor-pointer": !!account.approveVotes.length})}
@@ -55,14 +55,14 @@ const TaskInfoModal: FC<TaskInfoModalProps> = ({open, task, onClose}) => {
                         <InfoItem title="Approves votes">
                             {account.approveVotes.length}
                         </InfoItem>
-                    </Disclosure.Button>
-                    <Disclosure.Panel>
+                    </DisclosureButton>
+                    <DisclosurePanel>
                         {account.approveVotes.map((pubKey) => <div
                             key={publicKey.toString()}>{pubKey.toString()}</div>)}
-                    </Disclosure.Panel>
+                    </DisclosurePanel>
                 </Disclosure>
                 <Disclosure as="div">
-                    <Disclosure.Button
+                    <DisclosureButton
                         as="div"
                         disabled={!account.disapproveVotes.length}
                         className={classNames({"cursor-pointer": !!account.disapproveVotes.length})}
@@ -70,11 +70,11 @@ const TaskInfoModal: FC<TaskInfoModalProps> = ({open, task, onClose}) => {
                         <InfoItem title="Disapprove votes">
                             {account.disapproveVotes.length}
                         </InfoItem>
-                    </Disclosure.Button>
-                    <Disclosure.Panel>
+                    </DisclosureButton>
+                    <DisclosurePanel>
                         {account.disapproveVotes.map((pubKey) => <div
                             key={publicKey.toString()}>{pubKey.toString()}</div>)}
-                    </Disclosure.Panel>
+                    </DisclosurePanel>
                 </Disclosure>
             </div>
         </ModalContentWrapper>

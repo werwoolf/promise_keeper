@@ -1,6 +1,6 @@
-use anchor_lang::prelude::*;
-use crate::defaults::{TASK_IDENTIFIER, TASK_COUNTER_IDENTIFIER};
+use crate::defaults::{TASK_COUNTER_IDENTIFIER, TASK_IDENTIFIER};
 use crate::task_counter::TasksCounter;
+use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
 #[instruction(name: String)]
@@ -9,10 +9,7 @@ pub struct CreateTask<'info> {
         init,
         payer = authority,
         space = Task::SIZE,
-        seeds = [
-            TASK_IDENTIFIER, 
-            &counter.data.to_le_bytes()
-        ],
+        seeds = [TASK_IDENTIFIER, &counter.data.to_le_bytes()],
         bump
     )]
     pub(crate) task: Account<'info, Task>,
@@ -29,20 +26,20 @@ pub struct Task {
     #[max_len(10)]
     pub(crate) name: String,
     #[max_len(100)]
-    pub(crate)description: String,
+    pub(crate) description: String,
     #[max_len(10)]
-    pub(crate)due_date_s: Option<u64>,
+    pub(crate) due_date_s: Option<u64>,
     #[max_len(10)]
-    pub(crate)time_to_solve_s: u32,
+    pub(crate) time_to_solve_s: u32,
     #[max_len(10)]
-    pub(crate)user_id: Option<Pubkey>,
+    pub(crate) user_id: Option<Pubkey>,
     #[max_len(10)]
-    pub(crate)img_proof_hash: Option<String>,
-    pub(crate)status: TaskStatus,
+    pub(crate) img_proof_hash: Option<String>,
+    pub(crate) status: TaskStatus,
     #[max_len(9)]
-    pub(crate)approve_votes: Vec<Pubkey>,
+    pub(crate) approve_votes: Vec<Pubkey>,
     #[max_len(9)]
-    pub(crate)disapprove_votes: Vec<Pubkey>,
+    pub(crate) disapprove_votes: Vec<Pubkey>,
 }
 
 impl Task {

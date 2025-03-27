@@ -9,7 +9,10 @@ import {useCallback, useContext} from "react";
 import {ModalProviderContext} from "./components/ModalProvider.tsx";
 import CreateTaskModal from "./components/CreateTaskModal.tsx";
 import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
-import {useGetTasksQuery} from "./queries.ts";
+import {useGetTasksQuery} from "./queries/task.ts";
+import {get} from "lodash";
+import {useGetProfileQuery, useUpdateProfileMutation} from "./queries/profile.ts";
+import ProfileButton from "./components/ProfileButton.tsx";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -17,10 +20,11 @@ dayjs.extend(relativeTime);
 export type Task = ProgramAccount<IdlAccounts<PromiseKeeper>["task"]>;
 
 function App() {
+    const isConnectedWallet = get(window, "solana.isConnected", false);
     const {openModal} = useContext(ModalProviderContext);
-    const {data: tasks, isLoading} = useGetTasksQuery();
-
-    console.log(tasks)
+    const {data: tasks, isLoading} = useGetTasksQuery(!isConnectedWallet);
+    const {data: profile, isLoading: isLoadingProfile} = useGetProfileQuery();
+    const {mutateAsync: updateProfile} = useUpdateProfileMutation();
 
     const handleOpenCreateTaskModal = useCallback(() => {
         openModal(CreateTaskModal)
@@ -31,17 +35,26 @@ function App() {
                  style={{backgroundColor: "rgb(224, 227, 215)"}}>
                 <img src="/logo.webp" alt="Logo.webp" width={40}/>
                 <div className="flex gap-2 ml-auto">
+                    <ProfileButton/>
                     <WalletMultiButton style={{height: 32}}/>
-                    <button onClick={handleOpenCreateTaskModal}>
+                    <button onClick={handleOpenCreateTaskModal} disabled={!isConnectedWallet}>
                         Create task
                     </button>
                 </div>
 
             </div>
-            {isLoading && "Loading..."}
-            {!isLoading && !tasks?.length && <h2>There are no tasks yet</h2>}
+            {!isConnectedWallet && <div className="w-full h-full flex justify-center items-center">
+                <span className="text-2xl font-semibold">Please connect your wallet</span>
+            </div>}
+            {isConnectedWallet && !profile && !isLoadingProfile &&
+                <div className="w-full h-full flex gap-4 justify-center items-center">
+                    <span className="text-2xl font-semibold">You do not have an application account yet</span>
+                    <button onClick={() => updateProfile()}>Create account</button>
+                </div>}
+            {isConnectedWallet && isLoading && "Loading..."}
+            {isConnectedWallet && !isLoading && !tasks?.length && <h2>There are no tasks yet</h2>}
             {
-                !isLoading && !!tasks?.length &&
+                isConnectedWallet && !isLoading && !!tasks?.length &&
                 <div className="w-full flex flex-col gap-2 p-2 items-center justify-center">
                     {tasks.map((task) => <TaskListItem task={task} key={task.publicKey.toString()}/>)}
                 </div>

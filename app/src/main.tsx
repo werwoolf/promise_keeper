@@ -40,7 +40,7 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <PersistQueryClientProvider
             client={queryClient}
-            persistOptions={{persister}}
+            persistOptions={{persister, buster: Math.random().toString()}}
         >
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>

@@ -5,7 +5,7 @@ import cn from "classnames";
 import {capitalize, lowerCase} from "lodash";
 import {ModalProviderContext} from "./ModalProvider.tsx";
 import FinishTaskModal from "./FinishTaskModal.tsx";
-import {useTakeTaskMutation, useVoteTaskMutation} from "../queries.ts";
+import {useTakeTaskMutation, useVoteTaskMutation} from "../queries/task.ts";
 import {useUserGetImgUrlFromCID} from "../hooks/userGetImgUrlFromCID.ts";
 import TaskInfoModal from "./TaskInfoModal.tsx";
 

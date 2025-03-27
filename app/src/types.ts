@@ -15,3 +15,9 @@ export interface VoteTaskData {
     approve: 0 | 1
     taskPubKey: PublicKey
 }
+
+export interface UpdateUserProfileData {
+    nickname: string,
+    birthdate: number | null,
+    avatarHash: string | null,
+}

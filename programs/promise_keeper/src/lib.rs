@@ -12,7 +12,6 @@ use user::*;
 declare_id!("3BsTL53Aab3un682i8sjPeyQSgPMhXmwM3aDv7Py3gR9");
 
 //todo: authorization sign creation
-// auto init counter
 // account
 // type state ??
 // proper status string type

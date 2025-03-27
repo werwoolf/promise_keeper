@@ -99,6 +99,69 @@ export type PromiseKeeper = {
       ]
     },
     {
+      "name": "createUser",
+      "discriminator": [
+        108,
+        227,
+        130,
+        130,
+        252,
+        109,
+        75,
+        218
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "nickname",
+          "type": "string"
+        },
+        {
+          "name": "birthdate",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "avatarHash",
+          "type": {
+            "option": "string"
+          }
+        }
+      ]
+    },
+    {
       "name": "finishTask",
       "discriminator": [
         0,
@@ -260,6 +323,19 @@ export type PromiseKeeper = {
         222,
         234
       ]
+    },
+    {
+      "name": "user",
+      "discriminator": [
+        159,
+        117,
+        95,
+        227,
+        239,
+        151,
+        58,
+        236
+      ]
     }
   ],
   "errors": [
@@ -401,6 +477,34 @@ export type PromiseKeeper = {
         "fields": [
           {
             "name": "data",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "user",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nickname",
+            "type": "string"
+          },
+          {
+            "name": "birthdate",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "avatarHash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "registrationTime",
             "type": "u64"
           }
         ]

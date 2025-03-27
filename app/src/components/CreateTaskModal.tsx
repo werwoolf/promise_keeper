@@ -1,9 +1,9 @@
 import {ModalContentWrapper} from "./ModalContentWrapper.tsx";
 import {ChangeEvent, FC, useCallback, useState} from "react";
 import {Button} from "@headlessui/react";
-import {CreateTaskData} from "../storage/types.ts";
+import {CreateTaskData} from "../types.ts";
 import {mapSecondsToStringDuration, mapStringDurationToSeconds} from "../utils/duration.ts";
-import {useCreateTaskMutation} from "../queries.ts";
+import {useCreateTaskMutation} from "../queries/task.ts";
 
 const initData: CreateTaskData = {name: "", description: "", timeToSolveS: 3600};
 
