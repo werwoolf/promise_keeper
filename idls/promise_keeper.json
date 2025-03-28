@@ -1,0 +1,512 @@
+{
+  "address": "3BsTL53Aab3un682i8sjPeyQSgPMhXmwM3aDv7Py3gR9",
+  "metadata": {
+    "name": "promise_keeper",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "create_task",
+      "discriminator": [
+        194,
+        80,
+        6,
+        180,
+        232,
+        127,
+        48,
+        171
+      ],
+      "accounts": [
+        {
+          "name": "task",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  97,
+                  115,
+                  107
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "counter.data",
+                "account": "TasksCounter"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "counter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  97,
+                  115,
+                  107,
+                  95,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "time_to_solve_s",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "create_user",
+      "discriminator": [
+        108,
+        227,
+        130,
+        130,
+        252,
+        109,
+        75,
+        218
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "nickname",
+          "type": "string"
+        },
+        {
+          "name": "birthdate",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "avatar_hash",
+          "type": {
+            "option": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "finish_task",
+      "discriminator": [
+        0,
+        175,
+        40,
+        25,
+        148,
+        114,
+        206,
+        173
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "task",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "img_proof_hash",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "init_task_counter",
+      "discriminator": [
+        90,
+        97,
+        14,
+        93,
+        29,
+        61,
+        2,
+        8
+      ],
+      "accounts": [
+        {
+          "name": "counter",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  97,
+                  115,
+                  107,
+                  95,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "take_task",
+      "discriminator": [
+        82,
+        157,
+        156,
+        4,
+        65,
+        176,
+        238,
+        222
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "task",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "vote_task",
+      "discriminator": [
+        251,
+        185,
+        252,
+        131,
+        103,
+        218,
+        60,
+        54
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "task",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "approve",
+          "type": "u8"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Task",
+      "discriminator": [
+        79,
+        34,
+        229,
+        55,
+        88,
+        90,
+        55,
+        84
+      ]
+    },
+    {
+      "name": "TasksCounter",
+      "discriminator": [
+        4,
+        4,
+        99,
+        66,
+        210,
+        234,
+        222,
+        234
+      ]
+    },
+    {
+      "name": "User",
+      "discriminator": [
+        159,
+        117,
+        95,
+        227,
+        239,
+        151,
+        58,
+        236
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidData",
+      "msg": "Check input data"
+    },
+    {
+      "code": 6001,
+      "name": "Unauthorized",
+      "msg": "You are not authorized to perform this action."
+    },
+    {
+      "code": 6002,
+      "name": "CanNotFinishTask",
+      "msg": "Only task with status \\In progress\\ can be finished."
+    },
+    {
+      "code": 6003,
+      "name": "CanNotVoteTask",
+      "msg": "Only task with status \\Voting\\ can be voted."
+    },
+    {
+      "code": 6004,
+      "name": "CanNotVoteTaskSecondTime",
+      "msg": "You have already voted this task"
+    },
+    {
+      "code": 6005,
+      "name": "TaskAlreadyVoted",
+      "msg": "You have already voted this task."
+    },
+    {
+      "code": 6006,
+      "name": "TaskAlreadyTaken",
+      "msg": "Task already taken."
+    },
+    {
+      "code": 6007,
+      "name": "TaskStale",
+      "msg": "The task time has expired."
+    },
+    {
+      "code": 6008,
+      "name": "InternalError",
+      "msg": "TInternal program error."
+    }
+  ],
+  "types": [
+    {
+      "name": "Task",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "due_date_s",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "time_to_solve_s",
+            "type": "u32"
+          },
+          {
+            "name": "user_id",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "img_proof_hash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "TaskStatus"
+              }
+            }
+          },
+          {
+            "name": "approve_votes",
+            "type": {
+              "vec": "pubkey"
+            }
+          },
+          {
+            "name": "disapprove_votes",
+            "type": {
+              "vec": "pubkey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TaskStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "InProgress"
+          },
+          {
+            "name": "Voting"
+          },
+          {
+            "name": "Stale"
+          },
+          {
+            "name": "Success"
+          },
+          {
+            "name": "Fail"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TasksCounter",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "User",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "nickname",
+            "type": "string"
+          },
+          {
+            "name": "birthdate",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "avatar_hash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "registration_time",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

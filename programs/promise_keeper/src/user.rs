@@ -2,7 +2,6 @@ use crate::defaults::USER_IDENTIFIER;
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
-#[instruction(name: String)]
 pub struct CreateUser<'info> {
     #[account(
         init_if_needed,
@@ -11,22 +10,22 @@ pub struct CreateUser<'info> {
         seeds = [USER_IDENTIFIER, &authority.key().as_ref()],
         bump
     )]
-    pub(crate) user: Account<'info, User>,
+    pub user: Account<'info, User>,
     #[account(mut)]
-    pub(crate) authority: Signer<'info>,
-    system_program: Program<'info, System>,
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[account]
 #[derive(InitSpace, Debug)]
 pub struct User {
-    pub(crate) authority: Pubkey,
+    pub authority: Pubkey,
     #[max_len(20)]
-    pub(crate) nickname: String,
-    pub(crate) birthdate: Option<u64>,
+    pub nickname: String,
+    pub birthdate: Option<u64>,
     #[max_len(46)]
-    pub(crate) avatar_hash: Option<String>,
-    pub(crate) registration_time: u64,
+    pub avatar_hash: Option<String>,
+    pub registration_time: u64,
 }
 
 impl User {
