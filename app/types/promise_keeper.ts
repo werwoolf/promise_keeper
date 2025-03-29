@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/promise_keeper.json`.
  */
 export type PromiseKeeper = {
-  "address": "2hwvYKJRnmxrL8z5wgbKGzxvyJk9k9XnnX1V1wQjMZmP",
+  "address": "6cJtEwsgr4jjw6MGqTZcQ2nsZ3YEhyZfrfuqwAfCeoG7",
   "metadata": {
     "name": "promiseKeeper",
     "version": "0.1.0",
@@ -513,6 +513,23 @@ export type PromiseKeeper = {
           }
         ]
       }
+    }
+  ],
+  "constants": [
+    {
+      "name": "taskCounterIdentifier",
+      "type": "bytes",
+      "value": "[116, 97, 115, 107, 95, 99, 111, 117, 110, 116, 101, 114]"
+    },
+    {
+      "name": "taskIdentifier",
+      "type": "bytes",
+      "value": "[116, 97, 115, 107]"
+    },
+    {
+      "name": "userIdentifier",
+      "type": "bytes",
+      "value": "[117, 115, 101, 114]"
     }
   ]
 };

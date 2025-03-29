@@ -1,17 +1,18 @@
-use crate::tasks::promise_keeper::accounts::TasksCounter;
-use crate::tasks::promise_keeper::client::{accounts, args};
 use crate::utils::context::{get_test_context, TestContext};
 use anchor_client::solana_sdk::pubkey::Pubkey;
 use anchor_client::solana_sdk::signature::{Keypair, Signature, Signer};
 use anchor_client::solana_sdk::system_program;
 use anchor_client::{ClientError, Program};
-use anchor_lang::declare_program;
+use crate::promise_keeper::{
+    self,
+    constants::{TASK_COUNTER_IDENTIFIER, TASK_IDENTIFIER},
+    accounts::TasksCounter,
+    client::{accounts, args},
+};
 use std::sync::Arc;
 
-declare_program!(promise_keeper);
-
 pub fn get_tasks_counter_pda() -> Pubkey {
-    Pubkey::find_program_address(&[b"task_counter"], &Pubkey::from(promise_keeper::ID)).0
+    Pubkey::find_program_address(&[TASK_COUNTER_IDENTIFIER], &Pubkey::from(promise_keeper::ID)).0
 }
 
 pub async fn get_next_task_pda() -> Pubkey {
@@ -25,7 +26,7 @@ pub async fn get_next_task_pda() -> Pubkey {
         .expect("Failed getting account");
 
     Pubkey::find_program_address(
-        &[b"task", &task_counter.data.to_le_bytes()],
+        &[TASK_IDENTIFIER, &task_counter.data.to_le_bytes()],
         &Pubkey::from(promise_keeper::ID),
     )
     .0

@@ -508,5 +508,22 @@
         ]
       }
     }
+  ],
+  "constants": [
+    {
+      "name": "TASK_COUNTER_IDENTIFIER",
+      "type": "bytes",
+      "value": "[116, 97, 115, 107, 95, 99, 111, 117, 110, 116, 101, 114]"
+    },
+    {
+      "name": "TASK_IDENTIFIER",
+      "type": "bytes",
+      "value": "[116, 97, 115, 107]"
+    },
+    {
+      "name": "USER_IDENTIFIER",
+      "type": "bytes",
+      "value": "[117, 115, 101, 114]"
+    }
   ]
 }

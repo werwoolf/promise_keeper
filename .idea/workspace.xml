@@ -8,21 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c70ca9c-63e0-48ca-8746-95b2878f12bc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/src/utils/tasks.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Anchor.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Anchor.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/idl/promise_keeper.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/idl/promise_keeper.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/types/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/promise_keeper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idls/promise_keeper.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/promise_keeper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tests/promise_keeper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/idls/promise_keeper.json" beforeDir="false" afterPath="$PROJECT_DIR$/idls/promise_keeper.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/programs/promise_keeper/src/defaults.rs" beforeDir="false" afterPath="$PROJECT_DIR$/programs/promise_keeper/src/defaults.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/src/tasks.rs" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/tasks.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/src/user_profile.rs" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/user_profile.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/src/utils/context.rs" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/utils/context.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/src/utils/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/utils/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/src/utils/tasks.rs" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/utils/tasks.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +49,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Cargo.Test tasks::should_create_task_with_valid_data.executor": "Run",
+    "Cargo.Test tasks::should_find_task_counter_account.executor": "Run",
     "Cargo.Test tasks::should_finish_task.executor": "Run",
     "Cargo.Test tasks::should_get_all_tasks.executor": "Run",
     "Cargo.Test tasks::should_not_create_task_with_invalid_data.executor": "Run",
@@ -162,9 +156,9 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Cargo.Test tasks::should_not_vote_task_with_non_voting_status">
-    <configuration name="Test tasks::should_not_finish_task_with_non_in_progress_status" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package tests --lib tasks::should_not_finish_task_with_non_in_progress_status -- --exact" />
+  <component name="RunManager" selected="Cargo.Test tasks::should_find_task_counter_account">
+    <configuration name="Test tasks::should_find_task_counter_account" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package tests --lib tasks::should_find_task_counter_account -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -264,7 +258,7 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Cargo.Test tasks::should_not_finish_task_with_non_in_progress_status" />
+      <item itemvalue="Cargo.Test tasks::should_find_task_counter_account" />
       <item itemvalue="Cargo.Test tasks::should_not_vote_own_task" />
       <item itemvalue="Cargo.Test tasks::should_not_vote_task_twice" />
       <item itemvalue="Cargo.Test tasks::should_not_vote_task_with_non_voting_status" />
@@ -272,11 +266,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Test tasks::should_find_task_counter_account" />
         <item itemvalue="Cargo.Test tasks::should_not_vote_task_with_non_voting_status" />
         <item itemvalue="Cargo.Test tasks::should_not_vote_own_task" />
         <item itemvalue="Cargo.Test tasks::should_not_vote_task_twice" />
         <item itemvalue="Cargo.Test tasks::should_vote_task_and_change_status_to_success" />
-        <item itemvalue="Cargo.Test tasks::should_not_finish_task_with_non_in_progress_status" />
       </list>
     </recent_temporary>
   </component>
@@ -327,7 +321,7 @@
       <workItem from="1743228120324" duration="8370000" />
       <workItem from="1743242552985" duration="299000" />
       <workItem from="1743242854608" duration="1624000" />
-      <workItem from="1743244490167" duration="15006000" />
+      <workItem from="1743244490167" duration="16624000" />
     </task>
     <servers />
   </component>
