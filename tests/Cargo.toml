@@ -12,3 +12,4 @@ anchor-client = { version = "0.31.0", features = ["async"] }
 anchor-lang = "0.31.0"
 tokio = { version = "1.44.1", features = ["full"] }
 lazy_static = "1.5.0"
+uuid = { version = "1.16.0", features = ["v4"] }

@@ -9,12 +9,13 @@ use task::*;
 use task_counter::*;
 use user::*;
 
-declare_id!("3BsTL53Aab3un682i8sjPeyQSgPMhXmwM3aDv7Py3gR9");
+declare_id!("6cJtEwsgr4jjw6MGqTZcQ2nsZ3YEhyZfrfuqwAfCeoG7");
 
 //todo: authorization sign creation
 // account
 // type state ??
 // proper status string type
+// const macro
 
 #[program]
 pub mod promise_keeper {

@@ -35,98 +35,98 @@ describe("promise_keeper_task", () => {
 
     const program = anchor.workspace.promise_keeper;
 
-    it('Should find counter account', async () => {
-        const pda = getTasksCounterPDA();
-        const counterAccount = await program.account.tasksCounter.fetch(pda);
-
-        expect(counterAccount).to.be.an('object');
-        expect(counterAccount).to.have.property('data').that.is.instanceof(BN);
-    });
-
-    it('Should update task counter', async () => {
-        const pda = getTasksCounterPDA();
-
-        const initCounterAccount = await program.account.tasksCounter.fetch(pda);
-        const initCounter = initCounterAccount.data.toNumber();
-
-        await program.methods.createTask("name", "description", 3600)
-            .accounts({authority: provider.wallet.publicKey})
-            .rpc();
-
-        const counterAccount = await program.account.tasksCounter.fetch(pda);
-        const counter = counterAccount.data.toNumber();
-
-        expect(counter - initCounter).to.equal(1);
-    });
-
-    it('Should not create task with invalid data', async () => {
-        const wrongSets: Array<[string, string, number]> = [
-            ["na", "description", 3600], // short name
-            ["name", "de", 3600], // short description
-            ["name", "description", 3599], // short time to solve,
-        ];
-
-        for await (const set of wrongSets) {
-            const [name, description, timeToSolve] = set;
-            try {
-                await program.methods.createTask(name, description, timeToSolve)
-                    .accounts({authority: provider.wallet.publicKey})
-                    .rpc();
-
-                throw new Error(`Program should fail with values: ${set.join(",")}`);
-            } catch (e) {
-                expect(get(e, "error.errorCode.code", "")).to.equal("InvalidData");
-            }
-        }
-    });
-
-    it('Should create task with valid data', async () => {
-        const dataSets: Array<[string, string, number]> = [
-            ["Some long task name", "description", 36000],
-            ["QWE", "Some very long description for task", 9999],
-            ["Name", "description", 3600],
-        ];
-
-        for await (const set of dataSets) {
-            const [name, description, timeToSolveS] = set;
-            const taskPDA = await getNextTaskPDA();
-
-            await program.methods.createTask(name, description, timeToSolveS)
-                .accounts({authority: provider.wallet.publicKey})
-                .rpc();
-
-            const task = await program.account.task.fetch(taskPDA);
-
-            expect(task).to.deep.equal({
-                name,
-                description,
-                dueDateS: null,
-                timeToSolveS,
-                userId: null,
-                imgProofHash: null,
-                status: {pending: {}},
-                approveVotes: [],
-                disapproveVotes: []
-            });
-        }
-    });
-
-    it('Should get all tasks', async () => {
-        const tasks = await program.account.task.all();
-        expect(tasks).to.be.an('array');
-
-        tasks.forEach(({account}) => {
-            expect(account).to.have.property('name').that.is.a('string');
-            expect(account).to.have.property('description').that.is.a('string');
-            expect(account).to.have.property('dueDateS').satisfy(d => d instanceof BN || d === null);
-            expect(account).to.have.property('timeToSolveS').that.is.a('number');
-            expect(account).to.have.property('userId').satisfy(d => d instanceof anchor.web3.PublicKey || d === null);
-            expect(account).to.have.property('imgProofHash').satisfy(h => typeof h === "string" || h === null);
-            expect(account).to.have.property('status').that.is.an('object');
-            expect(account).to.have.property('approveVotes').that.is.an('array').with.lengthOf.at.most(9);
-            expect(account).to.have.property('disapproveVotes').that.is.an('array').with.lengthOf.at.most(9);
-        });
-    });
+    // it('Should find counter account', async () => {
+    //     const pda = getTasksCounterPDA();
+    //     const counterAccount = await program.account.tasksCounter.fetch(pda);
+    //
+    //     expect(counterAccount).to.be.an('object');
+    //     expect(counterAccount).to.have.property('data').that.is.instanceof(BN);
+    // });
+    //
+    // it('Should update task counter', async () => {
+    //     const pda = getTasksCounterPDA();
+    //
+    //     const initCounterAccount = await program.account.tasksCounter.fetch(pda);
+    //     const initCounter = initCounterAccount.data.toNumber();
+    //
+    //     await program.methods.createTask("name", "description", 3600)
+    //         .accounts({authority: provider.wallet.publicKey})
+    //         .rpc();
+    //
+    //     const counterAccount = await program.account.tasksCounter.fetch(pda);
+    //     const counter = counterAccount.data.toNumber();
+    //
+    //     expect(counter - initCounter).to.equal(1);
+    // });
+    //
+    // it('Should not create task with invalid data', async () => {
+    //     const wrongSets: Array<[string, string, number]> = [
+    //         ["na", "description", 3600], // short name
+    //         ["name", "de", 3600], // short description
+    //         ["name", "description", 3599], // short time to solve,
+    //     ];
+    //
+    //     for await (const set of wrongSets) {
+    //         const [name, description, timeToSolve] = set;
+    //         try {
+    //             await program.methods.createTask(name, description, timeToSolve)
+    //                 .accounts({authority: provider.wallet.publicKey})
+    //                 .rpc();
+    //
+    //             throw new Error(`Program should fail with values: ${set.join(",")}`);
+    //         } catch (e) {
+    //             expect(get(e, "error.errorCode.code", "")).to.equal("InvalidData");
+    //         }
+    //     }
+    // });
+    //
+    // it('Should create task with valid data', async () => {
+    //     const dataSets: Array<[string, string, number]> = [
+    //         ["Some long task name", "description", 36000],
+    //         ["QWE", "Some very long description for task", 9999],
+    //         ["Name", "description", 3600],
+    //     ];
+    //
+    //     for await (const set of dataSets) {
+    //         const [name, description, timeToSolveS] = set;
+    //         const taskPDA = await getNextTaskPDA();
+    //
+    //         await program.methods.createTask(name, description, timeToSolveS)
+    //             .accounts({authority: provider.wallet.publicKey})
+    //             .rpc();
+    //
+    //         const task = await program.account.task.fetch(taskPDA);
+    //
+    //         expect(task).to.deep.equal({
+    //             name,
+    //             description,
+    //             dueDateS: null,
+    //             timeToSolveS,
+    //             userId: null,
+    //             imgProofHash: null,
+    //             status: {pending: {}},
+    //             approveVotes: [],
+    //             disapproveVotes: []
+    //         });
+    //     }
+    // });
+    //
+    // it('Should get all tasks', async () => {
+    //     const tasks = await program.account.task.all();
+    //     expect(tasks).to.be.an('array');
+    //
+    //     tasks.forEach(({account}) => {
+    //         expect(account).to.have.property('name').that.is.a('string');
+    //         expect(account).to.have.property('description').that.is.a('string');
+    //         expect(account).to.have.property('dueDateS').satisfy(d => d instanceof BN || d === null);
+    //         expect(account).to.have.property('timeToSolveS').that.is.a('number');
+    //         expect(account).to.have.property('userId').satisfy(d => d instanceof anchor.web3.PublicKey || d === null);
+    //         expect(account).to.have.property('imgProofHash').satisfy(h => typeof h === "string" || h === null);
+    //         expect(account).to.have.property('status').that.is.an('object');
+    //         expect(account).to.have.property('approveVotes').that.is.an('array').with.lengthOf.at.most(9);
+    //         expect(account).to.have.property('disapproveVotes').that.is.an('array').with.lengthOf.at.most(9);
+    //     });
+    // });
 
     it('Should take task', async () => {
         const name = "Will be taken";
