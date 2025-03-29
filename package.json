@@ -4,7 +4,7 @@
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
     "test": "ts-mocha ./tests/**/*.ts",
-    "build": "anchor build && cp -r target/idl app && cp -r target/types app"
+    "build": "anchor build && anchor deploy && cp -r target/idl app && cp -r target/types app && cp -r target/idl/promise_keeper.json ./idls"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",

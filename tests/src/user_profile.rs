@@ -116,7 +116,7 @@ async fn should_update_user_account() {
 }
 
 #[tokio::test]
-pub async fn should_not_create_user_account_with_invalid_data() {
+async fn should_not_create_user_account_with_invalid_data() {
     let context = get_test_context().await;
     let TestContext { user, program } = context;
 
