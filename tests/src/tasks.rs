@@ -1,6 +1,3 @@
-declare_program!(promise_keeper);
-
-use crate::tasks::promise_keeper::types::TaskStatus;
 use crate::utils::context::{get_test_context_cached, TestContext};
 use crate::utils::tasks::{
     create_task, finish_task, get_next_task_pda, get_tasks_counter_pda, take_task, vote_task,
@@ -9,12 +6,13 @@ use crate::utils::VALID_CID;
 use anchor_client::solana_sdk::signature::Keypair;
 use anchor_client::solana_sdk::signer::Signer;
 use anchor_client::ClientError;
-use anchor_lang::declare_program;
+use crate::promise_keeper::{
+    accounts::{Task, TasksCounter},
+    types::TaskStatus,
+};
 use std::ops::Deref;
 use std::sync::Arc;
 use uuid::Uuid;
-
-use promise_keeper::accounts::{Task, TasksCounter};
 
 impl PartialEq for TaskStatus {
     fn eq(&self, other: &Self) -> bool {
@@ -410,11 +408,11 @@ async fn should_vote_task_and_change_status_to_success() {
 
     for i in 0..5 {
         let another_user = Arc::new(Keypair::new());
-        
+
         vote_task(&another_user, program, next_task_pda, 1)
             .await
             .expect("Failed to send vote task request");
-        
+
         let task = program
             .account::<Task>(next_task_pda)
             .await

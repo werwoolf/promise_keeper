@@ -1,13 +1,11 @@
+use crate::promise_keeper;
 use anchor_client::solana_client::nonblocking::rpc_client::RpcClient;
 use anchor_client::solana_sdk::commitment_config::CommitmentConfig;
 use anchor_client::solana_sdk::native_token::LAMPORTS_PER_SOL;
 use anchor_client::solana_sdk::signature::{Keypair, Signer};
 use anchor_client::{Client, Cluster, Program};
-use anchor_lang::declare_program;
 use std::sync::Arc;
 use tokio::sync::Mutex;
-
-declare_program!(promise_keeper);
 
 #[derive(Clone)]
 pub(crate) struct TestContext {

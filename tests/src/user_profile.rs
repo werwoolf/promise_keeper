@@ -1,14 +1,11 @@
+use crate::promise_keeper::accounts::User;
+use crate::utils::user_profile::{create_user_profile, get_user_profile_account_pda};
 use crate::utils::{
     context::{get_test_context, get_test_context_cached, TestContext},
     VALID_CID,
 };
-use anchor_client::solana_sdk::{signer::Signer, system_program};
-use anchor_client::{anchor_lang::declare_program, ClientError};
-use anchor_lang::prelude::Pubkey;
+use anchor_client::ClientError;
 use std::ops::Deref;
-
-declare_program!(promise_keeper);
-use promise_keeper::{accounts::User, client::accounts, client::args};
 
 #[tokio::test]
 async fn should_create_user_account() {
@@ -17,27 +14,15 @@ async fn should_create_user_account() {
 
     let nickname = "Serhii Testovyy".to_string();
 
-    let (profile_pda, _) = Pubkey::find_program_address(
-        &[b"user", user.pubkey().as_ref()],
-        &Pubkey::from(promise_keeper::ID),
-    );
+    let profile_pda = get_user_profile_account_pda(user);
 
-    program
-        .request()
-        .accounts(accounts::CreateUser {
-            authority: user.pubkey(),
-            user: profile_pda,
-            system_program: system_program::ID,
-        })
-        .args(args::CreateUser {
-            avatar_hash: Some(VALID_CID.to_string()),
-            birthdate: None,
-            nickname: nickname.clone(),
-        })
-        .signer(user.clone())
-        .send()
-        .await
-        .expect("Failed sending create user profile request");
+    create_user_profile(
+        user,
+        program,
+        (Some(VALID_CID.to_string()), None, nickname.clone()),
+    )
+    .await
+    .expect("Failed create user request");
 
     let profile: User = program
         .account::<User>(profile_pda)
@@ -51,33 +36,17 @@ async fn should_create_user_account() {
 
 #[tokio::test]
 async fn should_update_user_account() {
-    let nickname = "Serhii Testovyy".to_string();
-    let new_nickname = "Serhii Testovyy updated".to_string();
-
     let context = get_test_context().await;
     let TestContext { user, program } = context;
 
-    let (profile_pda, _) = Pubkey::find_program_address(
-        &[b"user", user.pubkey().as_ref()],
-        &Pubkey::from(promise_keeper::ID),
-    );
+    let nickname = "Serhii Testovyy".to_string();
+    let new_nickname = "Serhii Testovyy updated".to_string();
 
-    program
-        .request()
-        .accounts(accounts::CreateUser {
-            authority: user.pubkey(),
-            user: profile_pda,
-            system_program: system_program::ID,
-        })
-        .args(args::CreateUser {
-            avatar_hash: None,
-            birthdate: None,
-            nickname: nickname.clone(),
-        })
-        .signer(user.clone())
-        .send()
+    let profile_pda = get_user_profile_account_pda(&user);
+
+    create_user_profile(&user, &program, (None, None, nickname.clone()))
         .await
-        .expect("Failed sending create user profile request");
+        .expect("Failed create user request");
 
     let profile: User = program
         .account::<User>(profile_pda)
@@ -88,22 +57,13 @@ async fn should_update_user_account() {
     assert_eq!(profile.birthdate, None);
     assert_eq!(profile.nickname, nickname);
 
-    program
-        .request()
-        .accounts(accounts::CreateUser {
-            authority: user.pubkey(),
-            user: profile_pda,
-            system_program: system_program::ID,
-        })
-        .args(args::CreateUser {
-            avatar_hash: Some(VALID_CID.to_string()),
-            birthdate: None,
-            nickname: new_nickname.clone(),
-        })
-        .signer(user.clone())
-        .send()
-        .await
-        .expect("Failed sending create user profile request");
+    create_user_profile(
+        &user,
+        &program,
+        (Some(VALID_CID.to_string()), None, new_nickname.clone()),
+    )
+    .await
+    .expect("Failed create user request");
 
     let profile: User = program
         .account::<User>(profile_pda)
@@ -121,38 +81,17 @@ async fn should_not_create_user_account_with_invalid_data() {
     let TestContext { user, program } = context;
 
     let wrong_sets = [
-        ("na".to_string(), None, Some(VALID_CID.to_string())),
-        ("name".to_string(), None, Some("".to_string())),
+        (Some(VALID_CID.to_string()), None, "na".to_string()),
+        (Some("".to_string()), None, "name".to_string()),
         (
-            "name".to_string(),
-            None,
             Some(VALID_CID.to_string() + "123"),
+            None,
+            "name".to_string(),
         ),
     ];
 
-    let (profile_pda, _) = Pubkey::find_program_address(
-        &[b"user", user.pubkey().as_ref()],
-        &Pubkey::from(promise_keeper::ID),
-    );
-
-    for wrong_set in wrong_sets {
-        let (nickname, birthdate, avatar_hash) = wrong_set;
-
-        let res = program
-            .request()
-            .accounts(accounts::CreateUser {
-                authority: user.pubkey(),
-                user: profile_pda,
-                system_program: system_program::ID,
-            })
-            .args(args::CreateUser {
-                avatar_hash,
-                birthdate,
-                nickname,
-            })
-            .signer(user.clone())
-            .send()
-            .await;
+    for set in wrong_sets {
+        let res = create_user_profile(&user, &program, set).await;
 
         assert!(res.is_err_and(|e| {
             match e {
