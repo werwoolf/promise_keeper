@@ -2939,6 +2939,7 @@ version = "0.1.0"
 dependencies = [
  "anchor-lang 0.30.1",
  "cid",
+ "once_cell",
 ]
 
 [[package]]

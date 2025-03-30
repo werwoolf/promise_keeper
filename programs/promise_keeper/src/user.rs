@@ -1,4 +1,4 @@
-use crate::defaults::USER_IDENTIFIER;
+use crate::defaults::{CID_V1_LENGTH, USER_IDENTIFIER, USER_NICKNAME_MAX_LENGTH};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -20,19 +20,19 @@ pub struct CreateUser<'info> {
 #[derive(InitSpace, Debug)]
 pub struct User {
     pub authority: Pubkey,
-    #[max_len(20)]
+    #[max_len(USER_NICKNAME_MAX_LENGTH)]
     pub nickname: String,
     pub birthdate: Option<u64>,
-    #[max_len(46)]
+    #[max_len(CID_V1_LENGTH)]
     pub avatar_hash: Option<String>,
     pub registration_time: u64,
 }
 
 impl User {
     pub const SIZE: usize = 8 // discriminator
-        + 32 // authority (pub key)
-        + 24 // nickname (4 + length 20)
-        + 9 //  birthdate (1 + 8)
-        + 51 // avatar_hash (1 + 4 + length 46)
-        + 8; // registration_time (8)
+        + std::mem::size_of::<Pubkey>() // authority: pub key
+        + 4 + USER_NICKNAME_MAX_LENGTH as usize // nickname: string + max length
+        + 1 + 8 //  birthdate: option + u64
+        + 1 + 4 +  CID_V1_LENGTH as usize// avatar_hash: option + string +
+        + 8; // registration_time: u64
 }

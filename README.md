@@ -18,6 +18,7 @@ Planned features for the future include:
 - Adding custom coins
 - Minting custom coins for users upon successful task completion
 - Improving the UI and adding task filters
+- Use IPFS CID v1
 - Implementing an economic model
 - Deactivating task accounts
 - Improving local development complexity by packing application services into docker containers

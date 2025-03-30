@@ -12,10 +12,6 @@ use user::*;
 declare_id!("6cJtEwsgr4jjw6MGqTZcQ2nsZ3YEhyZfrfuqwAfCeoG7");
 
 //todo: authorization sign creation
-// account
-// type state ??
-// proper status string type
-// const macro
 
 #[program]
 pub mod promise_keeper {

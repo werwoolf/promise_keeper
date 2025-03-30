@@ -1,9 +1,12 @@
-use crate::defaults::{TASK_COUNTER_IDENTIFIER, TASK_IDENTIFIER};
+use crate::defaults::{
+    CID_V1_LENGTH, TASK_APPROVE_VOTES_TREASURE, TASK_COUNTER_IDENTIFIER,
+    TASK_DESCRIPTION_MAX_LENGTH, TASK_DISAPPROVE_VOTES_TREASURE, TASK_IDENTIFIER,
+    TASK_NAME_MAX_LENGTH,
+};
 use crate::task_counter::TasksCounter;
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
-#[instruction(name: String)]
 pub struct CreateTask<'info> {
     #[account(
         init,
@@ -23,36 +26,33 @@ pub struct CreateTask<'info> {
 #[account]
 #[derive(InitSpace, Debug)]
 pub struct Task {
-    #[max_len(10)]
+    #[max_len(TASK_NAME_MAX_LENGTH)]
     pub(crate) name: String,
-    #[max_len(100)]
+    #[max_len(TASK_DESCRIPTION_MAX_LENGTH)]
     pub(crate) description: String,
-    #[max_len(10)]
     pub(crate) due_date_s: Option<u64>,
-    #[max_len(10)]
     pub(crate) time_to_solve_s: u32,
-    #[max_len(10)]
     pub(crate) user_id: Option<Pubkey>,
-    #[max_len(10)]
+    #[max_len(CID_V1_LENGTH)]
     pub(crate) img_proof_hash: Option<String>,
     pub(crate) status: TaskStatus,
-    #[max_len(9)]
+    #[max_len(TASK_APPROVE_VOTES_TREASURE)]
     pub(crate) approve_votes: Vec<Pubkey>,
-    #[max_len(9)]
+    #[max_len(TASK_DISAPPROVE_VOTES_TREASURE)]
     pub(crate) disapprove_votes: Vec<Pubkey>,
 }
 
 impl Task {
     pub const SIZE: usize = 8 + // discriminator
-        4 + 10 + // name: length prefix (4) + max length (10)
-        4 + 100 + // description: length prefix (4) + max length (100)
-        1 + 8 + // due_date: Option<u64> (1 byte for tag + 8 bytes for u64)
+        4 * (TASK_NAME_MAX_LENGTH as usize) + // name: prefix + max length
+        4 + (TASK_DESCRIPTION_MAX_LENGTH as usize) + // description: prefix + max length
+        1 + 8 + // due_date: option + u64
         4 + // time_to_solve_s: u32
-        1 + 32 + // user_id: Option<Pubkey> (1 byte for tag + 32 bytes for Pubkey)
-        1 + 4 + 10 + // img_proof_hash: Option<String> (1 byte for tag + 4 bytes for length + 10 bytes for data)
-        1 + // status: TaskStatus
-        4 + (32 * 9) + // approve_votes: Vec<Pubkey> (4 bytes for length + 9 * 32 bytes for Pubkeys)
-        4 + (32 * 9); // disapprove_votes: Vec<Pubkey> (same as above)
+        1 + std::mem::size_of::<Pubkey>() + // user_id: option + pub key 
+        1 + 4 + (CID_V1_LENGTH as usize) + // img_proof_hash: option + string + max length
+        1 + // status: enum
+        4 + (std::mem::size_of::<Pubkey>() * TASK_APPROVE_VOTES_TREASURE as usize) + // approve_votes: vector + pub key * max length
+        4 + (std::mem::size_of::<Pubkey>() * TASK_DISAPPROVE_VOTES_TREASURE as usize); // disapprove_votes: vector + pub key * max length
 }
 
 #[derive(InitSpace, Clone, Debug, AnchorDeserialize, AnchorSerialize, PartialEq)]
