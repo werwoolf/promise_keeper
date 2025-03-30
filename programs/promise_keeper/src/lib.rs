@@ -5,6 +5,7 @@ pub mod task_counter;
 pub mod user;
 
 use crate::user::{CreateUser, User};
+use crate::defaults::{TASK_APPROVE_VOTES_TREASURE, TASK_DISAPPROVE_VOTES_TREASURE};
 use anchor_lang::prelude::*;
 use cid::Cid;
 use errors::ErrorCode;
@@ -18,12 +19,10 @@ declare_id!("6cJtEwsgr4jjw6MGqTZcQ2nsZ3YEhyZfrfuqwAfCeoG7");
 pub mod promise_keeper {
     use super::*;
 
-    const VOTES_MAJORITY_LIMIT: u8 = 5;
-
     pub fn create_user(
         ctx: Context<CreateUser>,
         nickname: String,
-        birthdate: Option<u32>,
+        birthdate: Option<u64>,
         avatar_hash: Option<String>,
     ) -> Result<()> {
         let user = &mut ctx.accounts.user;
@@ -149,10 +148,9 @@ pub mod promise_keeper {
             task.disapprove_votes.push(ctx.accounts.user.key());
         }
 
-        // todo: impl task account
-        if task.approve_votes.len() >= VOTES_MAJORITY_LIMIT.into() {
+        if task.approve_votes.len() >= TASK_APPROVE_VOTES_TREASURE.into() {
             task.status = TaskStatus::Success;
-        } else if task.disapprove_votes.len() >= 5 {
+        } else if task.disapprove_votes.len() >= TASK_DISAPPROVE_VOTES_TREASURE.into() {
             task.status = TaskStatus::Fail;
         }
 

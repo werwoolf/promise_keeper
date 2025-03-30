@@ -43,7 +43,11 @@ const ProfileModal: FC<ProfileModalProps> = ({open, onClose}) => {
     }, []);
 
     const handleChangeBirthday = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setProfileData(data => ({...data, birthdate: dayjs(e.target.value).toDate().getTime()}))
+        setProfileData(data => (
+            {
+                ...data,
+                birthdate: Math.trunc(dayjs(e.target.value).toDate().getTime() / 1000)
+            }))
     }, []);
 
     const handleSave = useCallback(() => {

@@ -26,7 +26,7 @@ pub struct User {
     pub authority: Pubkey,
     #[max_len(USER_NICKNAME_MAX_LENGTH)]
     pub nickname: String,
-    pub birthdate: Option<u32>,
+    pub birthdate: Option<u64>,
     #[max_len(CID_V1_LENGTH)]
     pub avatar_hash: Option<String>,
     pub registration_time: u64,
@@ -50,7 +50,7 @@ impl User {
             _ => Err(ErrorCode::NicknameLength.into()),
         }
     }
-    pub fn check_birthdate(birthdate: &Option<u32>) -> Result<()> {
+    pub fn check_birthdate(birthdate: &Option<u64>) -> Result<()> {
         match birthdate {
             None => Ok(()),
             Some(date) if (USER_MIN_BIRTH_DATE..=USER_MAX_BIRTH_DATE).contains(&*date) => Ok(()),

@@ -144,7 +144,7 @@
         {
           "name": "birthdate",
           "type": {
-            "option": "u32"
+            "option": "u64"
           }
         },
         {
@@ -522,7 +522,7 @@
           {
             "name": "birthdate",
             "type": {
-              "option": "u32"
+              "option": "u64"
             }
           },
           {
@@ -602,12 +602,12 @@
     },
     {
       "name": "USER_MAX_BIRTH_DATE",
-      "type": "u32",
+      "type": "u64",
       "value": "1577836800"
     },
     {
       "name": "USER_MIN_BIRTH_DATE",
-      "type": "u32",
+      "type": "u64",
       "value": "1"
     },
     {

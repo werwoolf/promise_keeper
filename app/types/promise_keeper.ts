@@ -150,7 +150,7 @@ export type PromiseKeeper = {
         {
           "name": "birthdate",
           "type": {
-            "option": "u32"
+            "option": "u64"
           }
         },
         {
@@ -528,7 +528,7 @@ export type PromiseKeeper = {
           {
             "name": "birthdate",
             "type": {
-              "option": "u32"
+              "option": "u64"
             }
           },
           {
@@ -608,12 +608,12 @@ export type PromiseKeeper = {
     },
     {
       "name": "userMaxBirthDate",
-      "type": "u32",
+      "type": "u64",
       "value": "1577836800"
     },
     {
       "name": "userMinBirthDate",
-      "type": "u32",
+      "type": "u64",
       "value": "1"
     },
     {
