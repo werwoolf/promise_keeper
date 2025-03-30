@@ -1,10 +1,11 @@
 use crate::promise_keeper::accounts::User;
+use crate::promise_keeper::constants::USER_MAX_BIRTH_DATE;
+use crate::utils::errors::assert_custom_error_code;
 use crate::utils::user_profile::{create_user_profile, get_user_profile_account_pda};
 use crate::utils::{
     context::{get_test_context, get_test_context_cached, TestContext},
     VALID_CID,
 };
-use anchor_client::ClientError;
 use std::ops::Deref;
 
 #[tokio::test]
@@ -81,23 +82,29 @@ async fn should_not_create_user_account_with_invalid_data() {
     let TestContext { user, program } = context;
 
     let wrong_sets = [
-        (Some(VALID_CID.to_string()), None, "na".to_string()),
-        (Some("".to_string()), None, "name".to_string()),
+        ((Some(VALID_CID.to_string()), None, "na".to_string()), 6008),
         (
-            Some(VALID_CID.to_string() + "123"),
-            None,
-            "name".to_string(),
+            (
+                Some("".to_string()),
+                Some(USER_MAX_BIRTH_DATE + 1),
+                "name".to_string(),
+            ),
+            6009,
+        ),
+        ((Some("".to_string()), None, "name".to_string()), 6010),
+        (
+            (
+                Some(VALID_CID.to_string() + "123"),
+                None,
+                "name".to_string(),
+            ),
+            6010,
         ),
     ];
 
-    for set in wrong_sets {
-        let res = create_user_profile(&user, &program, set).await;
+    for (set, expected_code) in wrong_sets {
+        let res = create_user_profile(&user, &program, set.clone()).await;
 
-        assert!(res.is_err_and(|e| {
-            match e {
-                ClientError::SolanaClientError(e) => true,
-                _ => false,
-            }
-        }));
+        assert_custom_error_code(res, expected_code)
     }
 }

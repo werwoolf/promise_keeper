@@ -150,7 +150,7 @@ export type PromiseKeeper = {
         {
           "name": "birthdate",
           "type": {
-            "option": "u64"
+            "option": "u32"
           }
         },
         {
@@ -341,48 +341,78 @@ export type PromiseKeeper = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidData",
-      "msg": "Check input data"
-    },
-    {
-      "code": 6001,
       "name": "unauthorized",
       "msg": "You are not authorized to perform this action."
     },
     {
-      "code": 6002,
+      "code": 6001,
       "name": "canNotFinishTask",
       "msg": "Only task with status \\In progress\\ can be finished."
     },
     {
-      "code": 6003,
+      "code": 6002,
       "name": "canNotVoteTask",
       "msg": "Only task with status \\Voting\\ can be voted."
     },
     {
-      "code": 6004,
+      "code": 6003,
       "name": "canNotVoteTaskSecondTime",
       "msg": "You have already voted this task"
     },
     {
-      "code": 6005,
+      "code": 6004,
       "name": "taskAlreadyVoted",
       "msg": "You have already voted this task."
     },
     {
-      "code": 6006,
+      "code": 6005,
       "name": "taskAlreadyTaken",
       "msg": "Task already taken."
     },
     {
-      "code": 6007,
+      "code": 6006,
       "name": "taskStale",
       "msg": "The task time has expired."
     },
     {
-      "code": 6008,
+      "code": 6007,
       "name": "internalError",
-      "msg": "TInternal program error."
+      "msg": "Internal program error."
+    },
+    {
+      "code": 6008,
+      "name": "nicknameLength",
+      "msg": "format"
+    },
+    {
+      "code": 6009,
+      "name": "birthDate",
+      "msg": "format"
+    },
+    {
+      "code": 6010,
+      "name": "avatar",
+      "msg": "format"
+    },
+    {
+      "code": 6011,
+      "name": "nameLength",
+      "msg": "format"
+    },
+    {
+      "code": 6012,
+      "name": "descriptionLength",
+      "msg": "format"
+    },
+    {
+      "code": 6013,
+      "name": "timeToSolve",
+      "msg": "format"
+    },
+    {
+      "code": 6014,
+      "name": "imgProof",
+      "msg": "format"
     }
   ],
   "types": [
@@ -498,7 +528,7 @@ export type PromiseKeeper = {
           {
             "name": "birthdate",
             "type": {
-              "option": "u64"
+              "option": "u32"
             }
           },
           {
@@ -517,9 +547,34 @@ export type PromiseKeeper = {
   ],
   "constants": [
     {
+      "name": "cidV1Length",
+      "type": "u8",
+      "value": "59"
+    },
+    {
+      "name": "taskApproveVotesTreasure",
+      "type": "u8",
+      "value": "5"
+    },
+    {
       "name": "taskCounterIdentifier",
       "type": "bytes",
       "value": "[116, 97, 115, 107, 95, 99, 111, 117, 110, 116, 101, 114]"
+    },
+    {
+      "name": "taskDescriptionMaxLength",
+      "type": "u8",
+      "value": "100"
+    },
+    {
+      "name": "taskDescriptionMinLength",
+      "type": "u8",
+      "value": "3"
+    },
+    {
+      "name": "taskDisapproveVotesTreasure",
+      "type": "u8",
+      "value": "5"
     },
     {
       "name": "taskIdentifier",
@@ -527,9 +582,49 @@ export type PromiseKeeper = {
       "value": "[116, 97, 115, 107]"
     },
     {
+      "name": "taskMaxTimeToSolveS",
+      "type": "u32",
+      "value": "432000"
+    },
+    {
+      "name": "taskMimTimeToSolveS",
+      "type": "u32",
+      "value": "3600"
+    },
+    {
+      "name": "taskNameMaxLength",
+      "type": "u8",
+      "value": "36"
+    },
+    {
+      "name": "taskNameMinLength",
+      "type": "u8",
+      "value": "3"
+    },
+    {
       "name": "userIdentifier",
       "type": "bytes",
       "value": "[117, 115, 101, 114]"
+    },
+    {
+      "name": "userMaxBirthDate",
+      "type": "u32",
+      "value": "1577836800"
+    },
+    {
+      "name": "userMinBirthDate",
+      "type": "u32",
+      "value": "1"
+    },
+    {
+      "name": "userNicknameMaxLength",
+      "type": "u8",
+      "value": "30"
+    },
+    {
+      "name": "userNicknameMinLength",
+      "type": "u8",
+      "value": "3"
     }
   ]
 };

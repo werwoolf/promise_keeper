@@ -1,40 +1,43 @@
+pub mod defaults;
+pub mod errors;
 pub mod task;
 pub mod task_counter;
 pub mod user;
-mod defaults;
 
+use crate::user::{CreateUser, User};
 use anchor_lang::prelude::*;
 use cid::Cid;
+use errors::ErrorCode;
 use task::*;
 use task_counter::*;
 use user::*;
 
 declare_id!("6cJtEwsgr4jjw6MGqTZcQ2nsZ3YEhyZfrfuqwAfCeoG7");
 
-//todo: authorization sign creation
-
 #[program]
 pub mod promise_keeper {
     use super::*;
-    use crate::user::{CreateUser, User};
+
     const VOTES_MAJORITY_LIMIT: u8 = 5;
 
     pub fn create_user(
         ctx: Context<CreateUser>,
         nickname: String,
-        birthdate: Option<u64>,
+        birthdate: Option<u32>,
         avatar_hash: Option<String>,
     ) -> Result<()> {
         let user = &mut ctx.accounts.user;
         let timestamp = Clock::get()?.unix_timestamp as u64;
 
-        if (nickname.len() < 3)
-            || avatar_hash
-                .clone()
-                .is_some_and(|hash| Cid::try_from(hash).is_err())
-        {
-            return Err(ErrorCode::InvalidData.into());
-        }
+        User::check_nickname(&nickname)?;
+        User::check_birthdate(&birthdate)?;
+
+        match avatar_hash.clone() {
+            Some(hash) => {
+                Cid::try_from(hash).map_err(|_| ErrorCode::Avatar)?;
+            }
+            _ => {}
+        };
 
         **user = User {
             nickname,
@@ -59,23 +62,13 @@ pub mod promise_keeper {
         let task = &mut ctx.accounts.task;
         let counter = &mut ctx.accounts.counter;
 
-        // todo: move to acc impl
-        if (name.len() < 3) || (description.len() < 3) || (time_to_solve_s < 3600) {
-            return Err(ErrorCode::InvalidData.into());
-        }
+        Task::check_name(&name)?;
+        Task::check_description(&description)?;
+        Task::check_time_to_solve_s(time_to_solve_s)?;
 
-        // todo: move to impl
-        **task = Task {
-            name,
-            description,
-            due_date_s: None,
-            time_to_solve_s,
-            user_id: None,
-            img_proof_hash: None,
-            status: TaskStatus::Pending,
-            approve_votes: vec![],
-            disapprove_votes: vec![],
-        };
+        task.name = name;
+        task.description = description;
+        task.time_to_solve_s = time_to_solve_s;
 
         counter.data += 1;
 
@@ -97,7 +90,7 @@ pub mod promise_keeper {
 
     pub fn finish_task(ctx: Context<FinishTask>, img_proof_hash: String) -> Result<()> {
         if Cid::try_from(img_proof_hash.clone()).is_err() {
-            return Err(ErrorCode::InvalidData.into());
+            return Err(ErrorCode::ImgProof.into());
         }
 
         let user = &mut ctx.accounts.user;
@@ -173,34 +166,4 @@ pub mod promise_keeper {
 
         Ok(())
     }
-}
-
-#[error_code]
-pub enum ErrorCode {
-    #[msg("Check input data")]
-    InvalidData,
-
-    #[msg("You are not authorized to perform this action.")]
-    Unauthorized,
-
-    #[msg("Only task with status \"In progress\" can be finished.")]
-    CanNotFinishTask,
-
-    #[msg("Only task with status \"Voting\" can be voted.")]
-    CanNotVoteTask,
-
-    #[msg("You have already voted this task")]
-    CanNotVoteTaskSecondTime,
-
-    #[msg("You have already voted this task.")]
-    TaskAlreadyVoted,
-
-    #[msg("Task already taken.")]
-    TaskAlreadyTaken,
-
-    #[msg("The task time has expired.")]
-    TaskStale,
-
-    #[msg("TInternal program error.")]
-    InternalError,
 }

@@ -1,15 +1,16 @@
+use crate::promise_keeper::{
+    accounts::{Task, TasksCounter},
+    constants::{TASK_APPROVE_VOTES_TREASURE, TASK_DISAPPROVE_VOTES_TREASURE},
+    types::TaskStatus,
+};
 use crate::utils::context::{get_test_context_cached, TestContext};
+use crate::utils::errors::assert_custom_error_code;
 use crate::utils::tasks::{
     create_task, finish_task, get_next_task_pda, get_tasks_counter_pda, take_task, vote_task,
 };
 use crate::utils::VALID_CID;
 use anchor_client::solana_sdk::signature::Keypair;
 use anchor_client::solana_sdk::signer::Signer;
-use anchor_client::ClientError;
-use crate::promise_keeper::{
-    accounts::{Task, TasksCounter},
-    types::TaskStatus,
-};
 use std::ops::Deref;
 use std::sync::Arc;
 use uuid::Uuid;
@@ -75,20 +76,15 @@ async fn should_not_create_task_with_invalid_data() {
     let TestContext { user, program } = context.deref();
 
     let wrong_sets = [
-        ("na".to_string(), "description".to_string(), 3600), // short name
-        ("name".to_string(), "de".to_string(), 3600),        // short description
-        ("name".to_string(), "description".to_string(), 3599), // short time to solve,
+        (("na".to_string(), "description".to_string(), 3600), 6011), // short name
+        (("name".to_string(), "de".to_string(), 3600), 6012),        // short description
+        (("name".to_string(), "description".to_string(), 3599), 6013), // short time to solve,
     ];
 
-    for wrong_set in wrong_sets {
-        let res = create_task(user, program, wrong_set).await;
+    for (set, expected_error_code) in wrong_sets {
+        let res = create_task(user, program, set).await;
 
-        assert!(res.is_err_and(|e| {
-            match e {
-                ClientError::SolanaClientError(e) => true,
-                _ => false,
-            }
-        }));
+        assert_custom_error_code(res, expected_error_code)
     }
 }
 
@@ -234,12 +230,7 @@ async fn should_not_take_already_taken_task() {
 
     let res = take_task(user, program, next_task_pda).await;
 
-    assert!(res.is_err_and(|e| {
-        match e {
-            ClientError::SolanaClientError(e) => true,
-            _ => false,
-        }
-    }));
+    assert_custom_error_code(res, 6005);
 }
 
 #[tokio::test]
@@ -295,12 +286,7 @@ async fn should_not_finish_task_with_invalid_image_proof_hash() {
 
     let res = finish_task(user, program, next_task_pda, VALID_CID.to_string() + "123").await;
 
-    assert!(res.is_err_and(|e| {
-        match e {
-            ClientError::SolanaClientError(e) => true,
-            _ => false,
-        }
-    }));
+    assert_custom_error_code(res, 6014);
 }
 
 #[tokio::test]
@@ -335,12 +321,7 @@ async fn should_not_finish_someones_else_task() {
     )
     .await;
 
-    assert!(res.is_err_and(|e| {
-        match e {
-            ClientError::SolanaClientError(e) => true,
-            _ => false,
-        }
-    }));
+    assert_custom_error_code(res, 2502);
 }
 
 #[tokio::test]
@@ -375,12 +356,7 @@ async fn should_not_finish_task_with_non_in_progress_status() {
 
     let res = finish_task(user, program, next_task_pda, VALID_CID.to_string()).await;
 
-    assert!(res.is_err_and(|e| {
-        match e {
-            ClientError::SolanaClientError(e) => true,
-            _ => false,
-        }
-    }));
+    assert_custom_error_code(res, 6001);
 }
 
 #[tokio::test]
@@ -406,7 +382,7 @@ async fn should_vote_task_and_change_status_to_success() {
         .await
         .expect("Failed sending finish task request");
 
-    for i in 0..5 {
+    for i in 1..=TASK_APPROVE_VOTES_TREASURE {
         let another_user = Arc::new(Keypair::new());
 
         vote_task(&another_user, program, next_task_pda, 1)
@@ -418,7 +394,7 @@ async fn should_vote_task_and_change_status_to_success() {
             .await
             .expect("Failed getting task");
 
-        if i == 4 {
+        if i == TASK_APPROVE_VOTES_TREASURE {
             assert_eq!(task.status, TaskStatus::Success);
         } else {
             assert_eq!(task.status, TaskStatus::Voting);
@@ -449,7 +425,7 @@ async fn should_vote_task_and_change_status_to_fail() {
         .await
         .expect("Failed sending finish task request");
 
-    for i in 0..5 {
+    for i in 1..=TASK_DISAPPROVE_VOTES_TREASURE {
         let another_user = Arc::new(Keypair::new());
         vote_task(&another_user, program, next_task_pda, 0)
             .await
@@ -460,7 +436,7 @@ async fn should_vote_task_and_change_status_to_fail() {
             .await
             .expect("Failed getting task");
 
-        if i == 4 {
+        if i == TASK_DISAPPROVE_VOTES_TREASURE {
             assert_eq!(task.status, TaskStatus::Fail);
         } else {
             assert_eq!(task.status, TaskStatus::Voting);
@@ -502,12 +478,7 @@ async fn should_not_vote_task_twice() {
 
     let res = vote_task(&another_user, program, next_task_pda, 1).await;
 
-    assert!(res.is_err_and(|e| {
-        match e {
-            ClientError::SolanaClientError(e) => true,
-            _ => false,
-        }
-    }));
+    assert_custom_error_code(res, 6003);
 }
 
 #[tokio::test]
@@ -535,12 +506,7 @@ async fn should_not_vote_own_task() {
 
     let res = vote_task(&user, program, next_task_pda, 1).await;
 
-    assert!(res.is_err_and(|e| {
-        match e {
-            ClientError::SolanaClientError(e) => true,
-            _ => false,
-        }
-    }));
+    assert_custom_error_code(res, 2504);
 }
 
 #[tokio::test]
@@ -566,10 +532,5 @@ async fn should_not_vote_task_with_non_voting_status() {
 
     let res = vote_task(&another_user, program, next_task_pda, 1).await;
 
-    assert!(res.is_err_and(|e| {
-        match e {
-            ClientError::SolanaClientError(e) => true,
-            _ => false,
-        }
-    }));
+    assert_custom_error_code(res, 6002);
 }

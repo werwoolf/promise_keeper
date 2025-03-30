@@ -20,7 +20,7 @@ pub fn get_user_profile_account_pda(user: &Arc<Keypair>) -> Pubkey {
 pub async fn create_user_profile(
     user: &Arc<Keypair>,
     program: &Arc<Program<Arc<Keypair>>>,
-    data: (Option<String>, Option<u64>, String),
+    data: (Option<String>, Option<u32>, String),
 ) -> Result<Signature, ClientError> {
     let (avatar_hash, birthdate, nickname) = data;
     program

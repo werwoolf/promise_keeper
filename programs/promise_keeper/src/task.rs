@@ -1,8 +1,10 @@
 use crate::defaults::{
     CID_V1_LENGTH, TASK_APPROVE_VOTES_TREASURE, TASK_COUNTER_IDENTIFIER,
-    TASK_DESCRIPTION_MAX_LENGTH, TASK_DISAPPROVE_VOTES_TREASURE, TASK_IDENTIFIER,
-    TASK_NAME_MAX_LENGTH,
+    TASK_DESCRIPTION_MAX_LENGTH, TASK_DESCRIPTION_MIN_LENGTH, TASK_DISAPPROVE_VOTES_TREASURE,
+    TASK_IDENTIFIER, TASK_MAX_TIME_TO_SOLVE_S, TASK_MIM_TIME_TO_SOLVE_S, TASK_NAME_MAX_LENGTH,
+    TASK_NAME_MIN_LENGTH,
 };
+use crate::errors::ErrorCode;
 use crate::task_counter::TasksCounter;
 use anchor_lang::prelude::*;
 
@@ -53,6 +55,34 @@ impl Task {
         1 + // status: enum
         4 + (std::mem::size_of::<Pubkey>() * TASK_APPROVE_VOTES_TREASURE as usize) + // approve_votes: vector + pub key * max length
         4 + (std::mem::size_of::<Pubkey>() * TASK_DISAPPROVE_VOTES_TREASURE as usize); // disapprove_votes: vector + pub key * max length
+
+    pub fn check_name(name: &String) -> Result<()> {
+        match name
+            .len()
+            .try_into()
+            .map_err(|_| ErrorCode::NameLength)?
+        {
+            TASK_NAME_MIN_LENGTH..=TASK_NAME_MAX_LENGTH => Ok(()),
+            _ => Err(ErrorCode::NameLength.into()),
+        }
+    }
+    pub fn check_description(description: &str) -> Result<()> {
+        match description
+            .len()
+            .try_into()
+            .map_err(|_| ErrorCode::DescriptionLength)?
+        {
+            TASK_DESCRIPTION_MIN_LENGTH..=TASK_DESCRIPTION_MAX_LENGTH => Ok(()),
+            _ => Err(ErrorCode::DescriptionLength.into()),
+        }
+    }
+
+    pub fn check_time_to_solve_s(time_to_solve_s: u32) -> Result<()> {
+        match time_to_solve_s {
+            TASK_MIM_TIME_TO_SOLVE_S..=TASK_MAX_TIME_TO_SOLVE_S => Ok(()),
+            _ => Err(ErrorCode::TimeToSolve.into()),
+        }
+    }
 }
 
 #[derive(InitSpace, Clone, Debug, AnchorDeserialize, AnchorSerialize, PartialEq)]
@@ -63,6 +93,12 @@ pub enum TaskStatus {
     Stale,
     Success,
     Fail,
+}
+
+impl Default for TaskStatus {
+    fn default() -> Self {
+        Self::Pending
+    }
 }
 
 #[derive(Accounts, Debug)]

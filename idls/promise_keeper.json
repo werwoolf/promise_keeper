@@ -144,7 +144,7 @@
         {
           "name": "birthdate",
           "type": {
-            "option": "u64"
+            "option": "u32"
           }
         },
         {
@@ -335,48 +335,78 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidData",
-      "msg": "Check input data"
-    },
-    {
-      "code": 6001,
       "name": "Unauthorized",
       "msg": "You are not authorized to perform this action."
     },
     {
-      "code": 6002,
+      "code": 6001,
       "name": "CanNotFinishTask",
       "msg": "Only task with status \\In progress\\ can be finished."
     },
     {
-      "code": 6003,
+      "code": 6002,
       "name": "CanNotVoteTask",
       "msg": "Only task with status \\Voting\\ can be voted."
     },
     {
-      "code": 6004,
+      "code": 6003,
       "name": "CanNotVoteTaskSecondTime",
       "msg": "You have already voted this task"
     },
     {
-      "code": 6005,
+      "code": 6004,
       "name": "TaskAlreadyVoted",
       "msg": "You have already voted this task."
     },
     {
-      "code": 6006,
+      "code": 6005,
       "name": "TaskAlreadyTaken",
       "msg": "Task already taken."
     },
     {
-      "code": 6007,
+      "code": 6006,
       "name": "TaskStale",
       "msg": "The task time has expired."
     },
     {
-      "code": 6008,
+      "code": 6007,
       "name": "InternalError",
-      "msg": "TInternal program error."
+      "msg": "Internal program error."
+    },
+    {
+      "code": 6008,
+      "name": "NicknameLength",
+      "msg": "format"
+    },
+    {
+      "code": 6009,
+      "name": "BirthDate",
+      "msg": "format"
+    },
+    {
+      "code": 6010,
+      "name": "Avatar",
+      "msg": "format"
+    },
+    {
+      "code": 6011,
+      "name": "NameLength",
+      "msg": "format"
+    },
+    {
+      "code": 6012,
+      "name": "DescriptionLength",
+      "msg": "format"
+    },
+    {
+      "code": 6013,
+      "name": "TimeToSolve",
+      "msg": "format"
+    },
+    {
+      "code": 6014,
+      "name": "ImgProof",
+      "msg": "format"
     }
   ],
   "types": [
@@ -492,7 +522,7 @@
           {
             "name": "birthdate",
             "type": {
-              "option": "u64"
+              "option": "u32"
             }
           },
           {
@@ -511,9 +541,34 @@
   ],
   "constants": [
     {
+      "name": "CID_V1_LENGTH",
+      "type": "u8",
+      "value": "59"
+    },
+    {
+      "name": "TASK_APPROVE_VOTES_TREASURE",
+      "type": "u8",
+      "value": "5"
+    },
+    {
       "name": "TASK_COUNTER_IDENTIFIER",
       "type": "bytes",
       "value": "[116, 97, 115, 107, 95, 99, 111, 117, 110, 116, 101, 114]"
+    },
+    {
+      "name": "TASK_DESCRIPTION_MAX_LENGTH",
+      "type": "u8",
+      "value": "100"
+    },
+    {
+      "name": "TASK_DESCRIPTION_MIN_LENGTH",
+      "type": "u8",
+      "value": "3"
+    },
+    {
+      "name": "TASK_DISAPPROVE_VOTES_TREASURE",
+      "type": "u8",
+      "value": "5"
     },
     {
       "name": "TASK_IDENTIFIER",
@@ -521,9 +576,49 @@
       "value": "[116, 97, 115, 107]"
     },
     {
+      "name": "TASK_MAX_TIME_TO_SOLVE_S",
+      "type": "u32",
+      "value": "432000"
+    },
+    {
+      "name": "TASK_MIM_TIME_TO_SOLVE_S",
+      "type": "u32",
+      "value": "3600"
+    },
+    {
+      "name": "TASK_NAME_MAX_LENGTH",
+      "type": "u8",
+      "value": "36"
+    },
+    {
+      "name": "TASK_NAME_MIN_LENGTH",
+      "type": "u8",
+      "value": "3"
+    },
+    {
       "name": "USER_IDENTIFIER",
       "type": "bytes",
       "value": "[117, 115, 101, 114]"
+    },
+    {
+      "name": "USER_MAX_BIRTH_DATE",
+      "type": "u32",
+      "value": "1577836800"
+    },
+    {
+      "name": "USER_MIN_BIRTH_DATE",
+      "type": "u32",
+      "value": "1"
+    },
+    {
+      "name": "USER_NICKNAME_MAX_LENGTH",
+      "type": "u8",
+      "value": "30"
+    },
+    {
+      "name": "USER_NICKNAME_MIN_LENGTH",
+      "type": "u8",
+      "value": "3"
     }
   ]
 }
