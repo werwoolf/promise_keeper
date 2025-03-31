@@ -18,4 +18,4 @@ cluster = "http://127.0.0.1:8899"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "cago test -- --test-threads=1" # here must be 1 thread due to manual computing tasks PDA depending on tasks counter value

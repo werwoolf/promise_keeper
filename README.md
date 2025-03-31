@@ -55,7 +55,8 @@ Planned features for the future include:
 - Run **`cp .env.example .env`** command
 - Run **`pnpm i`** command
 - Run **`pnpm dev`** command
--
-Install [Phantom wallet](https://chromewebstore.google.com/detail/phantom/bfnaelmomeimhlpmgjnjophhpkkoljpa?hl=uk&utm_source=ext_sidebar)
+- Install [Phantom wallet](https://chromewebstore.google.com/detail/phantom/bfnaelmomeimhlpmgjnjophhpkkoljpa?hl=uk&utm_source=ext_sidebar)
 - Set up wallet for using localnet
 - Run **`solana airdrop 10 <YOUR WALLET PUBLIC KEY>`**
+
+#### To run tests run **`anchor test`** command
