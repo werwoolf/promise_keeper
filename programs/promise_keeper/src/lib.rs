@@ -13,7 +13,7 @@ use task::*;
 use task_counter::*;
 use user::*;
 
-declare_id!("6cJtEwsgr4jjw6MGqTZcQ2nsZ3YEhyZfrfuqwAfCeoG7");
+declare_id!("AkxggcMGrz1PQYCqUnyR8PxiZMgKp8WsND1W9Sm59qsJ");
 
 #[program]
 pub mod promise_keeper {
@@ -22,7 +22,7 @@ pub mod promise_keeper {
     pub fn create_user(
         ctx: Context<CreateUser>,
         nickname: String,
-        birthdate: Option<u64>,
+        birthdate: Option<String>,
         avatar_hash: Option<String>,
     ) -> Result<()> {
         let user = &mut ctx.accounts.user;

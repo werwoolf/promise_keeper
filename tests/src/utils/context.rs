@@ -21,7 +21,7 @@ pub(crate) async fn get_test_context_cached() -> Arc<TestContext> {
     let mut cached_context = TEST_CONTEXT.lock().await;
 
     if let Some(context) = cached_context.clone() {
-        println!("RETURNED chached context");
+        println!("RETURNED cached context");
         return Arc::new(context);
     }
 

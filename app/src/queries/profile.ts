@@ -3,7 +3,6 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import * as anchor from "@coral-xyz/anchor";
 import {queryClient} from "../main.tsx";
 import {UpdateUserProfileData} from "../types.ts";
-import {BN} from "@coral-xyz/anchor";
 
 const USER_PROFILE_QK = "user-profile-key";
 
@@ -44,7 +43,7 @@ export const useUpdateProfileMutation = () => {
                 };
             }
             const transaction = await program!.methods
-                .createUser(nickname, birthdate ? new BN(birthdate) : null, avatarHash)
+                .createUser(nickname, birthdate, avatarHash)
                 .accounts({authority: wallet.publicKey})
                 .transaction();
 

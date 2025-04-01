@@ -8,7 +8,7 @@ seeds = true
 
 
 [programs.localnet]
-promise_keeper = "6cJtEwsgr4jjw6MGqTZcQ2nsZ3YEhyZfrfuqwAfCeoG7"
+promise_keeper = "AkxggcMGrz1PQYCqUnyR8PxiZMgKp8WsND1W9Sm59qsJ"
 
 [registry]
 url = "https://api.apr.dev"

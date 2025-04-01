@@ -76,9 +76,9 @@ async fn should_not_create_task_with_invalid_data() {
     let TestContext { user, program } = context.deref();
 
     let wrong_sets = [
-        (("na".to_string(), "description".to_string(), 3600), 6011), // short name
-        (("name".to_string(), "de".to_string(), 3600), 6012),        // short description
-        (("name".to_string(), "description".to_string(), 3599), 6013), // short time to solve,
+        (("na".to_string(), "description".to_string(), 3600), 6012), // short name
+        (("name".to_string(), "de".to_string(), 3600), 6013),        // short description
+        (("name".to_string(), "description".to_string(), 3599), 6014), // short time to solve,
     ];
 
     for (set, expected_error_code) in wrong_sets {
@@ -286,7 +286,7 @@ async fn should_not_finish_task_with_invalid_image_proof_hash() {
 
     let res = finish_task(user, program, next_task_pda, VALID_CID.to_string() + "123").await;
 
-    assert_custom_error_code(res, 6014);
+    assert_custom_error_code(res, 6015);
 }
 
 #[tokio::test]

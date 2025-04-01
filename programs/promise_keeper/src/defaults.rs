@@ -16,10 +16,10 @@ pub const USER_NICKNAME_MIN_LENGTH: u8 = 3;
 pub const USER_NICKNAME_MAX_LENGTH: u8 = 30;
 
 #[constant]
-pub const USER_MIN_BIRTH_DATE: u64 = 1; // January 1, 1970 (start of unix timestamp)
+pub const USER_MIN_AGE: u8 = 7;
 
 #[constant]
-pub const USER_MAX_BIRTH_DATE: u64 = 1_577_836_800;  // January 1, 2020
+pub const USER_MAX_AGE: u8 = 120;
 
 #[constant]
 pub const TASK_NAME_MIN_LENGTH: u8 = 3;

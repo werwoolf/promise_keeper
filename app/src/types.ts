@@ -18,6 +18,6 @@ export interface VoteTaskData {
 
 export interface UpdateUserProfileData {
     nickname: string,
-    birthdate: number | null,
+    birthdate: string | null,
     avatarHash: string | null,
 }

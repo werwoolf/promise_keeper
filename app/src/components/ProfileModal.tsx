@@ -2,7 +2,6 @@ import {ModalContentWrapper} from "./ModalContentWrapper.tsx";
 import {ChangeEvent, FC, useCallback, useEffect, useState} from "react";
 import FileInput from "./FileInput.tsx";
 import {UpdateUserProfileData} from "../types.ts";
-import dayjs from "dayjs";
 import {useGetProfileQuery, useUpdateProfileMutation} from "../queries/profile.ts";
 import {Spinner} from "./Spinner.tsx";
 import {useUserGetImgUrlFromCID} from "../hooks/userGetImgUrlFromCID.ts";
@@ -26,7 +25,7 @@ const ProfileModal: FC<ProfileModalProps> = ({open, onClose}) => {
         if (!!data && !isProfileLoading) {
             setProfileData({
                 avatarHash: data.avatarHash,
-                birthdate: data.birthdate ? data.birthdate.toNumber() : data.birthdate,
+                birthdate: data.birthdate,
                 nickname: data.nickname,
             })
         }
@@ -46,7 +45,7 @@ const ProfileModal: FC<ProfileModalProps> = ({open, onClose}) => {
         setProfileData(data => (
             {
                 ...data,
-                birthdate: Math.trunc(dayjs(e.target.value).toDate().getTime() / 1000)
+                birthdate: e.target.value
             }))
     }, []);
 
@@ -78,7 +77,7 @@ const ProfileModal: FC<ProfileModalProps> = ({open, onClose}) => {
                             className="w-full"
                             placeholder="Birthday"
                             type="date"
-                            value={profileData.birthdate ? dayjs(profileData.birthdate).format("YYYY-MM-DD") : undefined}
+                            value={profileData.birthdate || undefined}
                             onChange={handleChangeBirthday}
                         />
                     </div>
