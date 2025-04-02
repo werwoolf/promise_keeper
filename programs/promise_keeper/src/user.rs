@@ -54,19 +54,15 @@ impl User {
         }
     }
     pub fn check_birthdate(birthdate: &Option<String>) -> Result<()> {
-        msg!("Birth date 1: {:?}", birthdate);
         let birthdate = match birthdate {
             None => return Ok(()),
             Some(date) => {
                 NaiveDate::parse_from_str(date, "%Y-%m-%d").map_err(|_| ErrorCode::BirthFormat)?
             }
         };
-        msg!("Birth date: {:?}", birthdate);
         let current_date = DateTime::from_timestamp(Clock::get()?.unix_timestamp as i64, 0)
             .ok_or(ErrorCode::InternalError)?
             .date_naive();
-        msg!("Birth date: {:?}", birthdate);
-        msg!("current_date date: {:?}", current_date);
 
         match NaiveDate::years_since(&current_date, birthdate) {
             Some(age) if (USER_MIN_AGE as u32..=USER_MAX_AGE as u32).contains(&age) => Ok(()),
