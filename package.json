@@ -3,16 +3,23 @@
   "scripts": {
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
-    "test": "ts-mocha ./tests/**/*.ts"
+    "test": "ts-mocha ./tests/**/*.ts",
+    "build": "anchor build && anchor deploy && cp -r target/idl app && cp -r target/types app && cp -r target/idl/promise_keeper.json ./idls"
   },
   "dependencies": {
-    "@coral-xyz/anchor": "^0.30.1"
+    "@coral-xyz/anchor": "^0.30.1",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.0",
     "@types/chai": "^4.3.0",
+    "@types/chai-as-promised": "^8.0.2",
+    "@types/lodash": "^4.17.16",
     "@types/mocha": "^9.0.0",
+    "@types/node": "^22.13.11",
     "chai": "^4.3.4",
+    "chai-as-promised": "^8.0.1",
+    "dotenv": "^16.4.7",
     "install": "^0.13.0",
     "mocha": "^9.0.3",
     "prettier": "^2.6.2",

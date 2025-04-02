@@ -1,112 +1,167 @@
-use anchor_lang::prelude::*;
-use std::mem::size_of;
+pub mod defaults;
+pub mod errors;
+pub mod task;
+pub mod task_counter;
+pub mod user;
 
-declare_id!("ARKDUPvSk7fVmY676dLctbqDfncxy6SPiTVhy8zJabCC");
+use crate::user::{CreateUser, User};
+use crate::defaults::{TASK_APPROVE_VOTES_TREASURE, TASK_DISAPPROVE_VOTES_TREASURE};
+use anchor_lang::prelude::*;
+use cid::Cid;
+use errors::ErrorCode;
+use task::*;
+use task_counter::*;
+use user::*;
+
+declare_id!("AkxggcMGrz1PQYCqUnyR8PxiZMgKp8WsND1W9Sm59qsJ");
 
 #[program]
 pub mod promise_keeper {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        let mut counter = &mut ctx.accounts.counter;
-        let bump = ctx.bumps.counter;
+    pub fn create_user(
+        ctx: Context<CreateUser>,
+        nickname: String,
+        birthdate: Option<String>,
+        avatar_hash: Option<String>,
+    ) -> Result<()> {
+        let user = &mut ctx.accounts.user;
+        let timestamp = Clock::get()?.unix_timestamp as u64;
 
-        **counter = Counter {
+        User::check_nickname(&nickname)?;
+        User::check_birthdate(&birthdate)?;
+
+        match avatar_hash.clone() {
+            Some(hash) => {
+                Cid::try_from(hash).map_err(|_| ErrorCode::Avatar)?;
+            }
+            _ => {}
+        };
+
+        **user = User {
+            nickname,
+            birthdate,
+            avatar_hash,
             authority: *ctx.accounts.authority.key,
-            count: 0,
-            bump,
+            registration_time: match user.registration_time > 0 {
+                true => user.registration_time,
+                false => timestamp,
+            },
         };
 
         Ok(())
     }
 
-    pub fn increment(ctx: Context<Increment>) -> Result<()> {
+    pub fn create_task(
+        ctx: Context<CreateTask>,
+        name: String,
+        description: String,
+        time_to_solve_s: u32,
+    ) -> Result<()> {
+        let task = &mut ctx.accounts.task;
+        let counter = &mut ctx.accounts.counter;
+
+        Task::check_name(&name)?;
+        Task::check_description(&description)?;
+        Task::check_time_to_solve_s(time_to_solve_s)?;
+
+        task.name = name;
+        task.description = description;
+        task.time_to_solve_s = time_to_solve_s;
+
+        counter.data += 1;
+
+        Ok(())
+    }
+
+    pub fn take_task(ctx: Context<TakeTask>) -> Result<()> {
+        let task = &mut ctx.accounts.task;
+        if task.user_id.is_some() {
+            return Err(ErrorCode::TaskAlreadyTaken.into());
+        }
+
+        task.user_id = Some(ctx.accounts.user.key());
+        task.status = TaskStatus::InProgress;
+        task.due_date_s = Some(Clock::get()?.unix_timestamp as u64 + task.time_to_solve_s as u64);
+
+        Ok(())
+    }
+
+    pub fn finish_task(ctx: Context<FinishTask>, img_proof_hash: String) -> Result<()> {
+        if Cid::try_from(img_proof_hash.clone()).is_err() {
+            return Err(ErrorCode::ImgProof.into());
+        }
+
+        let user = &mut ctx.accounts.user;
+        let task = &mut ctx.accounts.task;
+        let due_date_s = task
+            .due_date_s
+            .ok_or::<ErrorCode>(ErrorCode::InternalError)?;
+
+        if due_date_s < Clock::get()?.unix_timestamp as u64 {
+            return Err(ErrorCode::TaskStale.into());
+        }
+
+        if task.status != TaskStatus::InProgress {
+            return Err(ErrorCode::CanNotFinishTask.into());
+        }
+
         require_keys_eq!(
-            ctx.accounts.authority.key(),
-            ctx.accounts.counter.authority,
-            ErrorCode::Unauthorized
+            user.key.key(),
+            task.user_id
+                .ok_or::<ErrorCode>(ErrorCode::CanNotFinishTask.into())?
+                .key()
         );
 
-        ctx.accounts.counter.count += 1;
+        task.status = TaskStatus::Voting;
+        task.img_proof_hash = Some(img_proof_hash);
+
+        Ok(())
+    }
+
+    pub fn vote_task(ctx: Context<VoteTask>, approve: u8) -> Result<()> {
+        let task = &mut ctx.accounts.task;
+        let user = &mut ctx.accounts.user;
+        let is_approved = approve != 0;
+
+        if task.status != TaskStatus::Voting {
+            return Err(ErrorCode::CanNotVoteTask.into());
+        }
+
+        require_keys_neq!(
+            user.key(),
+            task.user_id
+                .ok_or::<ErrorCode>(ErrorCode::CanNotFinishTask.into())?
+                .key()
+        );
+
+        let user_has_already_voted_task =
+            task.approve_votes.contains(&user.key()) || task.disapprove_votes.contains(&user.key());
+
+        if user_has_already_voted_task {
+            return Err(ErrorCode::CanNotVoteTaskSecondTime.into());
+        }
+
+        if is_approved {
+            task.approve_votes.push(ctx.accounts.user.key());
+        } else {
+            task.disapprove_votes.push(ctx.accounts.user.key());
+        }
+
+        if task.approve_votes.len() >= TASK_APPROVE_VOTES_TREASURE.into() {
+            task.status = TaskStatus::Success;
+        } else if task.disapprove_votes.len() >= TASK_DISAPPROVE_VOTES_TREASURE.into() {
+            task.status = TaskStatus::Fail;
+        }
+
+        Ok(())
+    }
+
+    pub fn init_task_counter(ctx: Context<InitTaskCounter>) -> Result<()> {
+        let tasks_counter = &mut ctx.accounts.counter;
+
+        **tasks_counter = TasksCounter { data: 0 };
+
         Ok(())
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize<'info> {
-    #[account(
-        init,
-        payer = authority,
-        space = Counter::SIZE,
-        seeds = [b"counter"],
-        bump
-    )]
-    counter: Account<'info, Counter>,
-    #[account(mut)]
-    authority: Signer<'info>,
-    system_program: Program<'info, System>,
-}
-
-#[derive(Accounts)]
-pub struct Increment<'info> {
-    #[account(
-        mut,
-        seeds = [b"counter"],
-        bump = counter.bump
-    )]
-    counter: Account<'info, Counter>,
-    authority: Signer<'info>,
-}
-
-#[account]
-pub struct Counter {
-    pub authority: Pubkey,
-    pub count: u64,
-    pub bump: u8,
-}
-
-impl Counter {
-    pub const SIZE: usize = 8 + 32 + 8 + 1;
-}
-
-#[error_code]
-pub enum ErrorCode {
-    #[msg("You are not authorized to perform this action.")]
-    Unauthorized,
-}
-
-// #[derive(Accounts)]
-// pub struct Initialize<'info> {
-//     #[account(
-//         init,
-//         payer = signer,
-//         space = size_of::<Task>() + 8,
-//         seeds = [b"task", signer.key().as_ref()],
-//         bump
-//     )]
-//     pub task: Account<'info, Task>,
-//
-//     #[account(mut)]
-//     pub signer: Signer<'info>,
-//
-//     pub system_program: Program<'info, System>,
-// }
-//
-// #[account]
-// #[derive(InitSpace)]
-// pub struct Task {
-//     #[max_len(10)]
-//     name: String,
-//     #[max_len(10)]
-//     description: String,
-//     #[max_len(10)]
-//     due_date: String,
-//     #[max_len(10)]
-//     time_to_solve: String,
-//     #[max_len(10)]
-//     user_id: Option<String>,
-//     #[max_len(10)]
-//     img_proof_hash: Option<String>,
-//     #[max_len(10)]
-//     status: String,
-// }
